@@ -4,10 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,8 +58,12 @@ fun AlarmDetailsScreen(
             )
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            MapAddressPickerView(viewModel = viewModel)
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            item { MapAddressPickerView(viewModel = viewModel) }
         }
     }
 }
@@ -73,9 +79,8 @@ fun MapAddressPickerView(viewModel: AlarmDetailsViewModel) {
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(10.dp)
             )
-            Box(modifier = Modifier.height(300.dp)) {
+            Box(modifier = Modifier.height(500.dp)) {
                 MapViewContainer(viewModel.isMapEditable.value, mapView, viewModel)
-
                 MapPinOverlay()
             }
         }
@@ -98,9 +103,6 @@ fun MapPinOverlay() {
                 contentDescription = "Pin Image"
             )
         }
-        Box(
-            Modifier.weight(1f)
-        ) {}
     }
 }
 
@@ -115,7 +117,11 @@ private fun MapViewContainer(
     ) {
         mapView.getMapAsync { map ->
 
-            map.uiSettings.setAllGesturesEnabled(isEnabled)
+            map.uiSettings.apply {
+                setAllGesturesEnabled(isEnabled)
+                isZoomControlsEnabled = true
+                isMyLocationButtonEnabled = true
+            }
 
             val currentLocation = viewModel.currentLocation.value
             val position = LatLng(currentLocation.latitude, currentLocation.longitude)

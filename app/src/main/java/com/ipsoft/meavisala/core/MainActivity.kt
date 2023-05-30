@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.android.gms.ads.MobileAds
 import com.ipsoft.meavisala.core.ui.Screen
 import com.ipsoft.meavisala.core.ui.Screen.Companion.ALARM_DETAILS_ACTION
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
@@ -112,6 +113,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        MobileAds.initialize(this) {}
     }
 
     private fun requestPermissions() {
