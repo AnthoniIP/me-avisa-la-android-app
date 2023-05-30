@@ -1,6 +1,7 @@
 package com.ipsoft.meavisala.core
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.ipsoft.meavisala.core.ui.Screen.Companion.ALARM_DETAILS_ACTION
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
 import com.ipsoft.meavisala.core.utils.PermissionInfo
 import com.ipsoft.meavisala.features.alarmedetails.AlarmDetailsScreen
+import com.ipsoft.meavisala.features.backgroundlocation.LocationService
 import com.ipsoft.meavisala.features.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,6 +64,12 @@ class MainActivity : ComponentActivity() {
                 hasPermissions = false
             }
             PermissionInfo.hasPermissions = hasPermissions
+        }
+        if (hasPermissions) {
+            Intent(this, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
         }
     }
 

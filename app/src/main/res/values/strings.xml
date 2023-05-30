@@ -17,4 +17,5 @@
     <string name="select_place_on_map">Selecione um lugar no mapa</string>
     <string name="search">Insira uma localização para pesquisar</string>
     <string name="or">ou</string>
+    <string name="background_location_notification_title">O aplicativo tem acesso a sua localização</string>
 </resources>

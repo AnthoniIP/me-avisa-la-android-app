@@ -1,97 +1,76 @@
 package com.ipsoft.meavisala.features.alarmedetails
 
-import android.content.Context
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
-import android.os.CountDownTimer
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ipsoft.meavisala.features.backgroundlocation.LocationClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.Locale
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
+class AlarmDetailsViewModel @Inject constructor(private val locationClient: LocationClient) :
+    ViewModel() {
 
-    val location = MutableStateFlow(getInitialLocation())
-    val addressText = mutableStateOf("")
-    var isMapEditable = mutableStateOf(true)
-    private var timer: CountDownTimer? = null
+    private val _currentLocation = MutableStateFlow(Location(""))
+    private val _isMapEditable = mutableStateOf(true)
 
-    private fun getInitialLocation() : Location{
-        val initialLocation = Location("")
-        initialLocation.latitude = 51.506874
-        initialLocation.longitude = -0.139800
-        return initialLocation
+    val currentLocation: StateFlow<Location> = _currentLocation
+    val isMapEditable = _isMapEditable
+
+    init {
+        getCurrentLocation()
     }
 
-    fun updateLocation(latitude: Double, longitude: Double){
-        if(latitude != location.value.latitude) {
-            val location = Location("")
-            location.latitude = latitude
-            location.longitude = longitude
-            setLocation(location)
+    private fun getCurrentLocation() {
+        viewModelScope.launch {
+            locationClient.getLocationUpdates(1000L)
+                .catch { e -> e.printStackTrace() }
+                .onEach { location ->
+                    _currentLocation.value = location
+                }
+                .launchIn(viewModelScope)
         }
+    }
+    fun updateLocation(latitude: Double, longitude: Double) {
+        val location = Location("")
+        location.latitude = latitude
+        location.longitude = longitude
+        setLocation(location)
     }
 
     private fun setLocation(loc: Location) {
-        location.value = loc
+        _currentLocation.value = loc
     }
-
-    fun getAddressFromLocation(context: Context): String {
-        val geocoder = Geocoder(context, Locale.getDefault())
-        var addresses: List<Address>? = null
-        var addressText = ""
-
-        try {
-            addresses = geocoder.getFromLocation(location.value.latitude, location.value.longitude, 1)
-        }catch(ex: Exception){
-            ex.printStackTrace()
-        }
-        if(!addresses.isNullOrEmpty()){
-            val address: Address = addresses[0]
-            addressText = address.getAddressLine(0) ?: ""
-        }
-
-
-
-
-
-        return addressText
-    }
-
-    fun onTextChanged(context: Context, text: String){
-        if(text == "")
-            return
-        timer?.cancel()
-        timer = object : CountDownTimer(1000, 1500) {
-            override fun onTick(millisUntilFinished: Long) { }
-            override fun onFinish() {
-                location.value = getLocationFromAddress(context, text)
-            }
-        }.start()
-    }
-
-    fun getLocationFromAddress(context: Context, strAddress: String): Location{
-        val geocoder = Geocoder(context, Locale.getDefault())
-        val address: Address?
-
-        val addresses: List<Address>? = geocoder.getFromLocationName(strAddress, 1)
-
-        if (addresses != null) {
-            if (addresses.isNotEmpty()) {
-                address = addresses[0]
-
-                val loc = Location("")
-                loc.latitude = address.latitude
-                loc.longitude = address.longitude
-                return loc
-            }
-        }
-
-        return location.value
-    }
-
+//
+//    fun getAddressFromLocation(context: Context): String {
+//        val geocoder = Geocoder(context, Locale.getDefault())
+//        var addresses: List<Address>? = null
+//        var addressText = ""
+//
+//        try {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                geocoder.getFromLocation(
+//                    location.value.latitude, location.value.longitude, 1
+//                ) { addresses = it }
+//            } else {
+//                addresses = geocoder.getFromLocation(
+//                    location.value.latitude, location.value.longitude, 1
+//                )
+//            }
+//
+//        } catch (ex: Exception) {
+//            ex.printStackTrace()
+//        }
+//        if (!addresses.isNullOrEmpty()) {
+//            addressText = addresses?.get(0)?.getAddressLine(0) ?: ""
+//        }
+//        return addressText
+//    }
 }

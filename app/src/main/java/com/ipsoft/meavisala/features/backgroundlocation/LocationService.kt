@@ -6,8 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.google.android.gms.location.LocationServices
 import com.ipsoft.meavisala.R
+import com.ipsoft.meavisala.core.utils.NOTIFICATION_CHANNEL_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,22 +16,17 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LocationService : Service() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private lateinit var locationClient: LocationClient
+
+    @Inject
+    lateinit var locationClient: LocationClient
 
     override fun onBind(intent: Intent?): IBinder? = null
-
-    override fun onCreate() {
-        super.onCreate()
-        locationClient = DefaultLocationClient(
-            applicationContext,
-            LocationServices.getFusedLocationProviderClient(applicationContext)
-        )
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> start()
@@ -40,8 +36,8 @@ class LocationService : Service() {
     }
 
     private fun start() {
-        val notification = NotificationCompat.Builder(this, "location")
-            .setContentTitle("Tracking location ...")
+        val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setContentTitle(getString(R.string.background_location_notification_title))
             .setContentText("Location: null")
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setOngoing(true)
