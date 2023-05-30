@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Me avisa lá</string>
+    <string name="permission_title">Permitir localização</string>
+    <string name="permission_disclaimer">Para que o aplicativo funcione corretamente e exiba os alarmes corretamente nos locais desejados, por favor autorize o uso da localição.</string>
+
+    <!-- Shared preference keys -->
+    <string name="pref_key">location_tracking_prefs</string>
+</resources>
