@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.backgroundlocation
+package com.ipsoft.meavisala.features.backgroundlocation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import com.ipsoft.meavisala.utils.extensions.hasLocationPermission
+import com.ipsoft.meavisala.core.utils.extensions.hasLocationPermission
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -38,8 +38,9 @@ class DefaultLocationClient(
                 LocationManager.NETWORK_PROVIDER
             )
 
-            if (!isGpsEnabled && !isNetworkEnabled)
+            if (!isGpsEnabled && !isNetworkEnabled) {
                 throw LocationClient.LocationException("GPS is disabled")
+            }
 
             val request = LocationRequest.create()
                 .setInterval(interval)
@@ -55,7 +56,9 @@ class DefaultLocationClient(
             }
 
             client.requestLocationUpdates(
-                request, locationCallback, Looper.getMainLooper()
+                request,
+                locationCallback,
+                Looper.getMainLooper()
             )
 
             awaitClose {
@@ -63,5 +66,4 @@ class DefaultLocationClient(
             }
         }
     }
-
 }

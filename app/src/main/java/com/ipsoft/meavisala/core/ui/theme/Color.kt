@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.ui.theme
+package com.ipsoft.meavisala.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

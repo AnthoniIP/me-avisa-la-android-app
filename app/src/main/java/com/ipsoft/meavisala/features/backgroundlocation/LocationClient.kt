@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.backgroundlocation
+package com.ipsoft.meavisala.features.backgroundlocation
 
 import android.location.Location
 import kotlinx.coroutines.flow.Flow

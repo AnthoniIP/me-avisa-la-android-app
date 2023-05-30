@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.ui.theme
+package com.ipsoft.meavisala.core.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -50,8 +50,8 @@ fun MeAvisaLaTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme                                                      -> DarkColorScheme
-        else                                                           -> LightColorScheme
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

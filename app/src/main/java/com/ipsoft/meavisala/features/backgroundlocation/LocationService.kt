@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.backgroundlocation
+package com.ipsoft.meavisala.features.backgroundlocation
 
 import android.app.NotificationManager
 import android.app.Service
@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.location.LocationServices
 import com.ipsoft.meavisala.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
@@ -66,7 +66,7 @@ class LocationService : Service() {
     }
 
     private fun stop() {
-        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_DETACH)
         stopSelf()
     }
 

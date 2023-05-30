@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:name=".MeAvisaLaApplication"
+        android:name=".core.MeAvisaLaApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,17 +18,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MeAvisaLá"
-        tools:targetApi="31">
+        android:theme="@style/Theme.MeAvisaLa"
+        tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".core.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MeAvisaLá">
+            android:theme="@style/Theme.MeAvisaLa">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".features.backgroundlocation.LocationService"/>
     </application>
 </manifest>

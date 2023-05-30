@@ -5,4 +5,6 @@
 
     <!-- Shared preference keys -->
     <string name="pref_key">location_tracking_prefs</string>
+    <string name="home">início</string>
+    <string name="cart">Detalhes do alarme</string>
 </resources>
