@@ -25,14 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.ads.AdSize
 import com.ipsoft.meavisala.R
-import com.ipsoft.meavisala.core.utils.PermissionInfo.hasPermissions
 import com.ipsoft.meavisala.features.ads.BannerAdView
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
-    onAddNewAlarmClick: () -> Unit,
+    onAddNewAlarmClick: () -> Unit
 ) {
     val hasPermissions = viewModel.hasPermissions.value
 

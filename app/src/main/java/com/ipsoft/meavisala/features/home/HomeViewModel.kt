@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.ipsoft.meavisala.core.utils.PermissionInfo
 import com.ipsoft.meavisala.data.datastore.PreferencesDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val preferencesDataStore: PreferencesDataStore,
+    private val preferencesDataStore: PreferencesDataStore
 ) : ViewModel(), PermissionInfo.OnPermissionListener {
 
     private val _hasPermissions = mutableStateOf(false)

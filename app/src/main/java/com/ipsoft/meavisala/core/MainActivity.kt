@@ -14,23 +14,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.android.gms.ads.MobileAds
 import com.ipsoft.meavisala.core.ui.Screen
-import com.ipsoft.meavisala.core.ui.Screen.Companion.ALARM_DETAILS_ACTION
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
 import com.ipsoft.meavisala.core.utils.PermissionInfo
-import com.ipsoft.meavisala.data.datastore.PreferencesDataStore
 import com.ipsoft.meavisala.features.alarmedetails.AlarmDetailsScreen
 import com.ipsoft.meavisala.features.backgroundlocation.LocationService
 import com.ipsoft.meavisala.features.home.HomeScreen
 import com.ipsoft.meavisala.features.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -57,7 +52,7 @@ class MainActivity : ComponentActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         checkPermissions()

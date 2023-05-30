@@ -40,7 +40,7 @@ import com.ipsoft.meavisala.features.ads.BannerAdView
 @Composable
 fun AlarmDetailsScreen(
     viewModel: AlarmDetailsViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -115,7 +115,7 @@ fun MapPinOverlay() {
 private fun MapViewContainer(
     isEnabled: Boolean,
     mapView: MapView,
-    viewModel: AlarmDetailsViewModel,
+    viewModel: AlarmDetailsViewModel
 ) {
     AndroidView(
         factory = { mapView }
