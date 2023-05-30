@@ -1,5 +1,6 @@
 package com.ipsoft.meavisala.features.alarmedetails
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,13 +34,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.ipsoft.meavisala.R
+import com.ipsoft.meavisala.features.ads.BannerAdView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmDetailsScreen(
-    alarmAction: Int,
     viewModel: AlarmDetailsViewModel = hiltViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -58,12 +58,13 @@ fun AlarmDetailsScreen(
             )
         }
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            item { MapAddressPickerView(viewModel = viewModel) }
+            BannerAdView()
+            MapAddressPickerView(viewModel = viewModel)
         }
     }
 }
@@ -79,7 +80,7 @@ fun MapAddressPickerView(viewModel: AlarmDetailsViewModel) {
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.padding(10.dp)
             )
-            Box(modifier = Modifier.height(500.dp)) {
+            Box(modifier = Modifier.height(300.dp)) {
                 MapViewContainer(viewModel.isMapEditable.value, mapView, viewModel)
                 MapPinOverlay()
             }
@@ -103,24 +104,30 @@ fun MapPinOverlay() {
                 contentDescription = "Pin Image"
             )
         }
+        Box(
+            Modifier.weight(1f)
+        ) {}
     }
 }
 
+@SuppressLint("MissingPermission")
 @Composable
 private fun MapViewContainer(
     isEnabled: Boolean,
     mapView: MapView,
-    viewModel: AlarmDetailsViewModel
+    viewModel: AlarmDetailsViewModel,
 ) {
     AndroidView(
         factory = { mapView }
     ) {
         mapView.getMapAsync { map ->
 
+            map.isMyLocationEnabled = true
             map.uiSettings.apply {
                 setAllGesturesEnabled(isEnabled)
                 isZoomControlsEnabled = true
                 isMyLocationButtonEnabled = true
+                isCompassEnabled = true
             }
 
             val currentLocation = viewModel.currentLocation.value
@@ -136,8 +143,4 @@ private fun MapViewContainer(
             }
         }
     }
-}
-
-enum class AlarmDetailsScreenActions(i: Int) {
-    CREATE(0), EDIT(1)
 }

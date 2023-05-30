@@ -23,20 +23,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.ads.AdSize
 import com.ipsoft.meavisala.R
+import com.ipsoft.meavisala.core.utils.PermissionInfo.hasPermissions
 import com.ipsoft.meavisala.features.ads.BannerAdView
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
-    onAddNewAlarmClick: () -> Unit
+    onAddNewAlarmClick: () -> Unit,
 ) {
     val hasPermissions = viewModel.hasPermissions.value
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddNewAlarmClick) {
+            FloatingActionButton(onClick = if (hasPermissions) onAddNewAlarmClick else onAllowPermissionClick) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = stringResource(id = R.string.add_new_alarm)
@@ -59,7 +61,7 @@ fun HomeScreen(
                 item { EmptyAlarmList() }
             }
             item { Spacer(modifier = Modifier.padding(8.dp)) }
-            item { BannerAdView() }
+            item { BannerAdView(AdSize.LARGE_BANNER) }
         }
     }
 }
