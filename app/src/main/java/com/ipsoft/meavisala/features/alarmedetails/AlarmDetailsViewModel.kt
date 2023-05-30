@@ -20,16 +20,15 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
     var isMapEditable = mutableStateOf(true)
     private var timer: CountDownTimer? = null
 
-    private fun getInitialLocation(): Location {
-        // Macapá -14.2400732 -53.1805017
+    private fun getInitialLocation() : Location{
         val initialLocation = Location("")
-        initialLocation.latitude = 0.0344566
-        initialLocation.longitude = -51.0666
+        initialLocation.latitude = 51.506874
+        initialLocation.longitude = -0.139800
         return initialLocation
     }
 
-    fun updateLocation(latitude: Double, longitude: Double) {
-        if (latitude != location.value.latitude) {
+    fun updateLocation(latitude: Double, longitude: Double){
+        if(latitude != location.value.latitude) {
             val location = Location("")
             location.latitude = latitude
             location.longitude = longitude
@@ -44,41 +43,46 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
     fun getAddressFromLocation(context: Context): String {
         val geocoder = Geocoder(context, Locale.getDefault())
         var addresses: List<Address>? = null
-        val addressText: String
+        var addressText = ""
 
         try {
-            addresses =
-                geocoder.getFromLocation(location.value.latitude, location.value.longitude, 1)
-        } catch (ex: Exception) {
+            addresses = geocoder.getFromLocation(location.value.latitude, location.value.longitude, 1)
+        }catch(ex: Exception){
             ex.printStackTrace()
         }
+        if(!addresses.isNullOrEmpty()){
+            val address: Address = addresses[0]
+            addressText = address.getAddressLine(0) ?: ""
+        }
 
-        val address: Address? = addresses?.get(0)
-        addressText = address?.getAddressLine(0) ?: ""
+
+
+
 
         return addressText
     }
 
-    fun onTextChanged(context: Context, text: String) {
-        if (text == "") {
+    fun onTextChanged(context: Context, text: String){
+        if(text == "")
             return
-        }
         timer?.cancel()
         timer = object : CountDownTimer(1000, 1500) {
-            override fun onTick(millisUntilFinished: Long) {}
+            override fun onTick(millisUntilFinished: Long) { }
             override fun onFinish() {
                 location.value = getLocationFromAddress(context, text)
             }
         }.start()
     }
 
-    fun getLocationFromAddress(context: Context, strAddress: String): Location {
+    fun getLocationFromAddress(context: Context, strAddress: String): Location{
         val geocoder = Geocoder(context, Locale.getDefault())
         val address: Address?
 
-        geocoder.getFromLocationName(strAddress, 1)?.let {
-            if (it.isNotEmpty()) {
-                address = it[0]
+        val addresses: List<Address>? = geocoder.getFromLocationName(strAddress, 1)
+
+        if (addresses != null) {
+            if (addresses.isNotEmpty()) {
+                address = addresses[0]
 
                 val loc = Location("")
                 loc.latitude = address.latitude
@@ -89,4 +93,5 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
 
         return location.value
     }
+
 }

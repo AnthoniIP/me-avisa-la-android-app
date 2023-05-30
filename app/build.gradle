@@ -25,25 +25,9 @@ android {
 
     buildTypes {
         release {
-
-            // Defina o caminho para o arquivo local.properties
-            def localPropertiesFile = file('local.properties')
-
-            // Verifique se o arquivo local.properties existe
-            if (localPropertiesFile.exists()) {
-                // Crie uma instância das propriedades
-                Properties properties = new Properties()
-                properties.load(localPropertiesFile.newDataInputStream())
-
-                // Obtenha o valor da chave desejada
-                def apiKey = properties.getProperty("MAPS_API_KEY")
-
-                // Defina o valor como uma constante de buildConfigField
-                resValue "String", "google_maps_key", "\"$apiKey\""}
-
-
                 minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }}
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_17

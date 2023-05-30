@@ -13,7 +13,7 @@
     <string name="missing_permissions">Permitir localização</string>
     <string name="allow_permission">Permitir</string>
     <string name="missing_permissions_info">Para que o alarme possa funcionar corretamente, por favor permita que este aplicativo acesse a localização do dispositivo</string>
-    <string name="google_maps_key">CHAVE GERADA NO BUILD.GRADLE</string>
+    <string name="google_maps_key">***REMOVED***</string>
     <string name="select_place_on_map">Selecione um lugar no mapa</string>
     <string name="search">Insira uma localização para pesquisar</string>
     <string name="or">ou</string>
