@@ -8,9 +8,9 @@ import android.os.CountDownTimer
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Locale
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @HiltViewModel
 class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
@@ -21,7 +21,7 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
     private var timer: CountDownTimer? = null
 
     private fun getInitialLocation(): Location {
-        //Macapá -14.2400732 -53.1805017
+        // Macapá -14.2400732 -53.1805017
         val initialLocation = Location("")
         initialLocation.latitude = 0.0344566
         initialLocation.longitude = -51.0666
@@ -56,13 +56,13 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
         val address: Address? = addresses?.get(0)
         addressText = address?.getAddressLine(0) ?: ""
 
-
         return addressText
     }
 
     fun onTextChanged(context: Context, text: String) {
-        if (text == "")
+        if (text == "") {
             return
+        }
         timer?.cancel()
         timer = object : CountDownTimer(1000, 1500) {
             override fun onTick(millisUntilFinished: Long) {}
@@ -85,11 +85,8 @@ class AlarmDetailsViewModel @Inject constructor() : ViewModel() {
                 loc.longitude = address.longitude
                 return loc
             }
-
         }
 
         return location.value
     }
-
-
 }

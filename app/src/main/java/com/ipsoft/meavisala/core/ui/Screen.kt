@@ -12,7 +12,7 @@ sealed class Screen(
     @Suppress("unused")
     @StringRes
     val resourceId: Int,
-    val icon: ImageVector,
+    val icon: ImageVector
 ) {
     object Home : Screen("home", R.string.home, Icons.Filled.Home)
     object AlarmDetails : Screen("alarm_details", R.string.cart, Icons.Filled.DateRange)

@@ -4,7 +4,6 @@ object PermissionInfo {
 
     private val listeners = mutableListOf<OnPermissionListener>()
 
-
     var hasPermissions = false
         set(value) {
             notifyListeners()
@@ -23,9 +22,7 @@ object PermissionInfo {
         listeners.remove(listener)
     }
 
-
     interface OnPermissionListener {
         fun onPermissionUpdated(hasPermissions: Boolean)
     }
-
 }

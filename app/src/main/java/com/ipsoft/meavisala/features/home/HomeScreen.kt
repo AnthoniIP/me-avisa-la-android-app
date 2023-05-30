@@ -30,9 +30,8 @@ import com.ipsoft.meavisala.R
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
-    onAddNewAlarmClick: () -> Unit,
+    onAddNewAlarmClick: () -> Unit
 ) {
-
     val hasPermissions = viewModel.hasPermissions.value
 
     Scaffold(
@@ -42,7 +41,6 @@ fun HomeScreen(
                     imageVector = Icons.Filled.Add,
                     contentDescription = stringResource(id = R.string.add_new_alarm)
                 )
-
             }
         }
     ) { paddingValues ->
@@ -53,20 +51,13 @@ fun HomeScreen(
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-
             if (!hasPermissions) {
                 MissingPermissions(onAllowPermissionClick = onAllowPermissionClick)
             } else {
                 EmptyAlarmList()
-
             }
-
-
         }
-
-
     }
-
 }
 
 @Composable
@@ -104,10 +95,7 @@ fun MissingPermissions(onAllowPermissionClick: () -> Unit) {
             Spacer(modifier = Modifier.padding(8.dp))
             Button(onClick = onAllowPermissionClick) {
                 Text(text = stringResource(id = R.string.allow_permission))
-
             }
-
         }
-
     }
 }

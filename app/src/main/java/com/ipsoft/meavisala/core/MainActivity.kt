@@ -30,7 +30,9 @@ class MainActivity : ComponentActivity() {
 
     private val requiredPermissions = mutableListOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.INTERNET
+
     ).apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(Manifest.permission.POST_NOTIFICATIONS)
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         checkPermissions()
@@ -61,7 +63,6 @@ class MainActivity : ComponentActivity() {
             }
             PermissionInfo.hasPermissions = hasPermissions
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,15 +77,18 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
 
                     NavHost(navController = navController, startDestination = Screen.Home.route) {
-                        composable(Screen.Home.route, arguments = listOf(
-                            navArgument(ALARM_DETAILS_ACTION) {
-                                type = NavType.IntType
-                            }
-                        )) {
+                        composable(
+                            Screen.Home.route,
+                            arguments = listOf(
+                                navArgument(ALARM_DETAILS_ACTION) {
+                                    type = NavType.IntType
+                                }
+                            )
+                        ) {
                             HomeScreen(
                                 onAllowPermissionClick = {
                                     requestPermissions()
-                                },
+                                }
                             ) {
                                 navController.navigate(Screen.AlarmDetails.route)
                             }

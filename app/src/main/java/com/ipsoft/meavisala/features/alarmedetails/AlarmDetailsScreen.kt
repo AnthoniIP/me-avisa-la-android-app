@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,15 +47,13 @@ import com.ipsoft.meavisala.R
 fun AlarmDetailsScreen(
     alarmAction: Int,
     viewModel: AlarmDetailsViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
-
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(stringResource(id = R.string.add_new_alarm))
-
                 },
                 navigationIcon = {
                     Icon(
@@ -64,10 +61,9 @@ fun AlarmDetailsScreen(
                         contentDescription = stringResource(id = R.string.back),
                         modifier = Modifier.clickable { onBackClick() }
                     )
-
-                },
+                }
             )
-        },
+        }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             MapAddressPickerView(viewModel = viewModel)
@@ -85,14 +81,14 @@ fun MapAddressPickerView(viewModel: AlarmDetailsViewModel) {
         val context = LocalContext.current
 
         Column(Modifier.fillMaxWidth()) {
-
             Box {
                 TextField(
                     value = text,
                     onValueChange = {
                         text = it
-                        if (!viewModel.isMapEditable.value)
+                        if (!viewModel.isMapEditable.value) {
                             viewModel.onTextChanged(context, text)
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,7 +115,6 @@ fun MapAddressPickerView(viewModel: AlarmDetailsViewModel) {
             }
 
             Box(modifier = Modifier.height(300.dp)) {
-
                 currentLocation.value.let {
                     if (viewModel.isMapEditable.value) {
                         text = viewModel.getAddressFromLocation(context)
@@ -159,12 +154,11 @@ fun MapPinOverlay() {
 private fun MapViewContainer(
     isEnabled: Boolean,
     mapView: MapView,
-    viewModel: AlarmDetailsViewModel,
+    viewModel: AlarmDetailsViewModel
 ) {
     AndroidView(
         factory = { mapView }
     ) {
-
         mapView.getMapAsync { map ->
 
             map.uiSettings.setAllGesturesEnabled(isEnabled)
@@ -181,7 +175,6 @@ private fun MapViewContainer(
                 )
             }
         }
-
     }
 }
 

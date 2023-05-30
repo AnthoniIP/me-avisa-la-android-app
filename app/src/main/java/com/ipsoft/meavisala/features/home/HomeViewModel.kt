@@ -13,7 +13,6 @@ class HomeViewModel @Inject constructor() : ViewModel(), PermissionInfo.OnPermis
     private val _hasPermissions = mutableStateOf(false)
     val hasPermissions: State<Boolean> = _hasPermissions
 
-
     init {
         PermissionInfo.addListener(this)
     }
