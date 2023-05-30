@@ -7,4 +7,14 @@
     <string name="pref_key">location_tracking_prefs</string>
     <string name="home">início</string>
     <string name="cart">Detalhes do alarme</string>
+    <string name="add_new_alarm">Adicionar novo alarme</string>
+    <string name="back">voltar</string>
+    <string name="empty_alarm_list">Você ainda não adicionou nenhum alarme</string>
+    <string name="missing_permissions">Permitir localização</string>
+    <string name="allow_permission">Permitir</string>
+    <string name="missing_permissions_info">Para que o alarme possa funcionar corretamente, por favor permita que este aplicativo acesse a localização do dispositivo</string>
+    <string name="google_maps_key">CHAVE GERADA NO BUILD.GRADLE</string>
+    <string name="select_place_on_map">Selecione um lugar no mapa</string>
+    <string name="search">Insira uma localização para pesquisar</string>
+    <string name="or">ou</string>
 </resources>
