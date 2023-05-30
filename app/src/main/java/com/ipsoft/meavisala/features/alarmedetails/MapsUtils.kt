@@ -1,6 +1,8 @@
 package com.ipsoft.meavisala.features.alarmedetails
 
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -15,7 +17,7 @@ import com.ipsoft.meavisala.R
 fun rememberMapViewWithLifecycle(): MapView {
     val context = LocalContext.current
     val mapView = remember {
-        MapView(context).apply {
+        ScrollableMapView(context).apply {
             id = R.id.map
         }
     }
@@ -48,3 +50,14 @@ private fun rememberMapLifecycleObserver(mapView: MapView): LifecycleEventObserv
             }
         }
     }
+
+class ScrollableMapView(context: Context) : MapView(context) {
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        when (ev.action) {
+            MotionEvent.ACTION_UP -> parent.requestDisallowInterceptTouchEvent(false)
+            MotionEvent.ACTION_DOWN -> parent.requestDisallowInterceptTouchEvent(true)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+}

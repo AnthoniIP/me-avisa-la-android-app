@@ -1,9 +1,11 @@
 package com.ipsoft.meavisala.features.alarmedetails
 
 import android.location.Location
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.features.backgroundlocation.LocationClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +20,15 @@ import javax.inject.Inject
 class AlarmDetailsViewModel @Inject constructor(private val locationClient: LocationClient) :
     ViewModel() {
 
-    private val _currentLocation = MutableStateFlow(Location(""))
+    private val _currentLocation = MutableStateFlow(getInitialLocation())
     private val _isMapEditable = mutableStateOf(true)
+    private val _selectedDistance = mutableStateOf(Distance.ON_LOCAL)
+    private val _currentZoom = mutableStateOf(3f)
 
     val currentLocation: StateFlow<Location> = _currentLocation
-    val isMapEditable = _isMapEditable
+    val isMapEditable: State<Boolean> = _isMapEditable
+    val selectedDistance: State<Distance> = _selectedDistance
+    val currentZoom: State<Float> = _currentZoom
 
     init {
         getCurrentLocation()
@@ -33,11 +39,23 @@ class AlarmDetailsViewModel @Inject constructor(private val locationClient: Loca
             locationClient.getLocationUpdates(1000L)
                 .catch { e -> e.printStackTrace() }
                 .onEach { location ->
-                    _currentLocation.value = location
+                    setLocation(location)
                 }
                 .launchIn(viewModelScope)
         }
     }
+
+    private fun getInitialLocation(): Location {
+        val location = Location("")
+        location.latitude = -14.2400732
+        location.longitude = -53.1805017
+        return location
+    }
+
+    fun updateZoom(zoom: Float) {
+        _currentZoom.value = zoom
+    }
+
     fun updateLocation(latitude: Double, longitude: Double) {
         val location = Location("")
         location.latitude = latitude
@@ -48,29 +66,8 @@ class AlarmDetailsViewModel @Inject constructor(private val locationClient: Loca
     private fun setLocation(loc: Location) {
         _currentLocation.value = loc
     }
-//
-//    fun getAddressFromLocation(context: Context): String {
-//        val geocoder = Geocoder(context, Locale.getDefault())
-//        var addresses: List<Address>? = null
-//        var addressText = ""
-//
-//        try {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                geocoder.getFromLocation(
-//                    location.value.latitude, location.value.longitude, 1
-//                ) { addresses = it }
-//            } else {
-//                addresses = geocoder.getFromLocation(
-//                    location.value.latitude, location.value.longitude, 1
-//                )
-//            }
-//
-//        } catch (ex: Exception) {
-//            ex.printStackTrace()
-//        }
-//        if (!addresses.isNullOrEmpty()) {
-//            addressText = addresses?.get(0)?.getAddressLine(0) ?: ""
-//        }
-//        return addressText
-//    }
+
+    fun onDistanceSelected(distance: Distance) {
+        _selectedDistance.value = distance
+    }
 }

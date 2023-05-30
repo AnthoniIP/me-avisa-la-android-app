@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.ads.AdSize
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.features.ads.BannerAdView
 
@@ -45,13 +44,14 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-
         LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
+            item { BannerAdView() }
+            item { Spacer(modifier = Modifier.padding(8.dp)) }
             if (!hasPermissions) {
                 item {
                     MissingPermissions(onAllowPermissionClick = onAllowPermissionClick)
@@ -59,8 +59,6 @@ fun HomeScreen(
             } else {
                 item { EmptyAlarmList() }
             }
-            item { Spacer(modifier = Modifier.padding(8.dp)) }
-            item { BannerAdView(AdSize.LARGE_BANNER) }
         }
     }
 }

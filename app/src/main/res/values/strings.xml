@@ -18,4 +18,6 @@
     <string name="search">Insira uma localização para pesquisar</string>
     <string name="or">ou</string>
     <string name="background_location_notification_title">O aplicativo tem acesso a sua localização</string>
+    <string name="select_distance">Distancia mínima para que o lembrete ser mostrado</string>
+    <string name="on_local">Quando eu chegar no local</string>
 </resources>
