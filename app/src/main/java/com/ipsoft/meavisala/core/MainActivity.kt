@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -134,12 +136,26 @@ class MainActivity : ComponentActivity() {
                                     launchPurchaseFlow(signatureProduct)
                                 }
                             ) {
-                                navController.navigate(Screen.AlarmDetails.route)
+                                navController.navigate(Screen.AlarmDetails.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
+                                }
                             }
                         }
                         composable(Screen.AlarmDetails.route) {
                             AlarmDetailsScreen {
-                                navController.popBackStack()
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    navController.popBackStack()
+                                }, 1000)
                             }
                         }
                     }

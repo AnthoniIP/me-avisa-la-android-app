@@ -32,8 +32,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +45,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.defaultIpsoftSize
@@ -50,10 +57,7 @@ import com.ipsoft.meavisala.core.utils.extensions.getVerCode
 import com.ipsoft.meavisala.core.utils.mediumPadding
 import com.ipsoft.meavisala.core.utils.smallPadding
 import com.ipsoft.meavisala.features.ads.BannerAdView
-import com.ipsoft.meavisala.features.map.HomeMapViewContainer
 import com.ipsoft.meavisala.features.map.MapPinOverlay
-import com.ipsoft.meavisala.features.map.MapType
-import com.ipsoft.meavisala.features.map.rememberMapViewWithLifecycle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,8 +142,10 @@ fun HomeScreen(
                     }
                 } else {
                     if (alarmState.alarms.isNotEmpty()) {
-                        items(alarmState.alarms.size) { index ->
-                            AlarmItem(alarm = alarmState.alarms[index], viewModel)
+                        alarmState.alarms.sortedBy { it.id }.reversed().forEach { alarm ->
+                            item {
+                                AlarmItem(alarm = alarm, viewModel)
+                            }
                         }
                     } else {
                         item { EmptyAlarmList() }
@@ -188,10 +194,23 @@ fun AlarmItem(alarm: AlarmEntity, viewModel: HomeViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(modifier = Modifier.height(300.dp)) {
-                HomeMapViewContainer(
-                    mapView = rememberMapViewWithLifecycle(MapType.NORMAL),
-                    currentZoom = 15f,
-                    alarm = alarm
+                val mapUiSettings by remember {
+                    mutableStateOf(
+                        MapUiSettings(
+                            mapToolbarEnabled = false,
+                            scrollGesturesEnabledDuringRotateOrZoom = false,
+                            scrollGesturesEnabled = false
+                        )
+                    )
+                }
+                val location = LatLng(alarm.latitude, alarm.longitude)
+                val cameraPositionState = rememberCameraPositionState {
+                    position = CameraPosition.fromLatLngZoom(location, 15f)
+                }
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    cameraPositionState = cameraPositionState,
+                    uiSettings = mapUiSettings
                 )
                 MapPinOverlay()
             }
