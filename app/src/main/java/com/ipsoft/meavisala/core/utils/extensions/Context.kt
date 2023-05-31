@@ -1,7 +1,9 @@
 package com.ipsoft.meavisala.core.utils.extensions
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
@@ -39,4 +41,10 @@ fun Context.hasLocationPermission(): Boolean {
         this,
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
+}
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity       -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else              -> null
 }

@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.distances
 import com.ipsoft.meavisala.features.ads.BannerAdView
+import com.ipsoft.meavisala.features.ads.showInterstitial
 import com.ipsoft.meavisala.features.map.MapPinOverlay
 import com.ipsoft.meavisala.features.map.MapViewContainer
 import com.ipsoft.meavisala.features.map.rememberMapViewWithLifecycle
@@ -45,7 +47,7 @@ import com.ipsoft.meavisala.features.verticalscrolllayout.VerticalScrollLayout
 @Composable
 fun AlarmDetailsScreen(
     viewModel: AlarmDetailsViewModel = hiltViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val selectedDistance = viewModel.selectedDistance.value
     val currentZoom = viewModel.currentZoom.value
@@ -54,7 +56,10 @@ fun AlarmDetailsScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.add_new_alarm), style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        stringResource(id = R.string.add_new_alarm),
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 },
                 navigationIcon = {
                     Icon(
@@ -68,7 +73,9 @@ fun AlarmDetailsScreen(
     ) { paddingValues ->
         val creationComplete = viewModel.creationSuccess.value
         if (creationComplete) {
-            onBackClick()
+            showInterstitial(LocalContext.current) {
+                onBackClick()
+            }
         }
         val mapView = rememberMapViewWithLifecycle()
         VerticalScrollLayout(
@@ -145,7 +152,7 @@ fun AlarmDetailsScreen(
 @Composable
 fun DistanceSelector(
     onDistanceSelected: (Distance) -> Unit,
-    selectedDistance: Distance
+    selectedDistance: Distance,
 ) {
     Column(
         modifier = Modifier

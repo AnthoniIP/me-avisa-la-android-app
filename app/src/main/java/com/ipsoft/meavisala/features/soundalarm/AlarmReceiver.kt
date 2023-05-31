@@ -8,10 +8,7 @@ import com.ipsoft.meavisala.R
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val mediaPlayer = MediaPlayer.create(
-            context,
-            R.raw.alarm_sound
-        ) // Substitua "alarm_sound" pelo nome do seu arquivo de áudio na pasta "res/raw"
+        val mediaPlayer = MediaPlayer.create(context, R.raw.alarm_sound)
         mediaPlayer.start()
     }
 }

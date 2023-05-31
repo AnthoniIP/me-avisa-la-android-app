@@ -21,6 +21,8 @@ import com.google.android.gms.ads.MobileAds
 import com.ipsoft.meavisala.core.ui.Screen
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
 import com.ipsoft.meavisala.core.utils.PermissionInfo
+import com.ipsoft.meavisala.features.ads.loadInterstitial
+import com.ipsoft.meavisala.features.ads.removeInterstitial
 import com.ipsoft.meavisala.features.alarmedetails.AlarmDetailsScreen
 import com.ipsoft.meavisala.features.backgroundlocation.LocationService
 import com.ipsoft.meavisala.features.home.HomeScreen
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         checkPermissions()
@@ -110,6 +112,12 @@ class MainActivity : ComponentActivity() {
             }
         }
         MobileAds.initialize(this) {}
+        loadInterstitial(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeInterstitial()
     }
 
     private fun requestPermissions() {
