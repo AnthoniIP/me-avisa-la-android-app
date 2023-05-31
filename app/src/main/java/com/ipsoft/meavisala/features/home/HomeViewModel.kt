@@ -21,13 +21,16 @@ class HomeViewModel @Inject constructor(
 
     private val _alarms = mutableStateOf(AlarmState())
     private val _hasPermissions = mutableStateOf(false)
+    private val _showAds = mutableStateOf(true)
 
     val hasPermissions: State<Boolean> = _hasPermissions
     val alarms: State<AlarmState> = _alarms
+    val showAds: State<Boolean> = _showAds
 
     init {
         PermissionInfo.addListener(this)
         loadHasPermissions()
+        loadShowAds()
     }
 
     fun getAlarms() {
@@ -39,6 +42,18 @@ class HomeViewModel @Inject constructor(
     private fun loadHasPermissions() {
         viewModelScope.launch {
             _hasPermissions.value = preferencesDataStore.readHasPermissions()
+        }
+    }
+
+    private fun loadShowAds() {
+        viewModelScope.launch {
+            _showAds.value = preferencesDataStore.readShowAds()
+        }
+    }
+
+    fun saveShowAds(showAds: Boolean) {
+        viewModelScope.launch {
+            preferencesDataStore.storeShowAds(showAds)
         }
     }
 

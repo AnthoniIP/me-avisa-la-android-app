@@ -47,10 +47,11 @@ import com.ipsoft.meavisala.features.verticalscrolllayout.VerticalScrollLayout
 @Composable
 fun AlarmDetailsScreen(
     viewModel: AlarmDetailsViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     val selectedDistance = viewModel.selectedDistance.value
     val currentZoom = viewModel.currentZoom.value
+    val showAds = viewModel.showAds.value
 
     Scaffold(
         topBar = {
@@ -73,7 +74,11 @@ fun AlarmDetailsScreen(
     ) { paddingValues ->
         val creationComplete = viewModel.creationSuccess.value
         if (creationComplete) {
-            showInterstitial(LocalContext.current) {
+            if (showAds) {
+                showInterstitial(LocalContext.current) {
+                    onBackClick()
+                }
+            } else {
                 onBackClick()
             }
         }
@@ -152,7 +157,7 @@ fun AlarmDetailsScreen(
 @Composable
 fun DistanceSelector(
     onDistanceSelected: (Distance) -> Unit,
-    selectedDistance: Distance,
+    selectedDistance: Distance
 ) {
     Column(
         modifier = Modifier

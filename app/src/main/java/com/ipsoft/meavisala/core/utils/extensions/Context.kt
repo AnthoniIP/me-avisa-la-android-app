@@ -44,7 +44,7 @@ fun Context.hasLocationPermission(): Boolean {
 }
 
 fun Context.findActivity(): Activity? = when (this) {
-    is Activity       -> this
+    is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
-    else              -> null
+    else -> null
 }

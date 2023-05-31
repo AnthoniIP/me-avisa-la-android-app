@@ -14,7 +14,7 @@ var mInterstitialAd: InterstitialAd? = null
 fun loadInterstitial(context: Context) {
     InterstitialAd.load(
         context,
-        "ca-app-pub-8913306252830803/6969125968", //Change this with your own AdUnitID!
+        "ca-app-pub-8913306252830803/6969125968", // Change this with your own AdUnitID!
         AdRequest.Builder().build(),
         object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {

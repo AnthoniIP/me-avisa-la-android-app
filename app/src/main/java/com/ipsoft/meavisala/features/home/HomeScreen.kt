@@ -60,10 +60,12 @@ import com.ipsoft.meavisala.features.map.rememberMapViewWithLifecycle
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
+    onRemoveAdsClick: () -> Unit,
     onAddNewAlarmClick: () -> Unit
 ) {
     val hasPermissions = viewModel.hasPermissions.value
     val alarmState = viewModel.alarms.value
+    val showAds = viewModel.showAds.value
 
     val showAboutDialog = remember { mutableStateOf(false) }
     val loadAlarm = remember { mutableStateOf(true) }
@@ -106,7 +108,11 @@ fun HomeScreen(
         }
     ) { paddingValues ->
         if (showAboutDialog.value) {
-            AboutDialog(onDismiss = { showAboutDialog.value = false })
+            AboutDialog(
+                onDismiss = { showAboutDialog.value = false },
+                onRemoveAdsClick = onRemoveAdsClick,
+                showAds = showAds
+            )
         }
 
         Column(
@@ -116,7 +122,9 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            BannerAdView()
+            if (showAds) {
+                BannerAdView()
+            }
             LazyColumn(
                 Modifier
                     .weight(1f)
@@ -143,7 +151,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun AboutDialog(onDismiss: () -> Unit) {
+fun AboutDialog(onDismiss: () -> Unit, onRemoveAdsClick: () -> Unit, showAds: Boolean) {
     Dialog(
         onDismissRequest = { onDismiss() }
     ) {
@@ -153,14 +161,16 @@ fun AboutDialog(onDismiss: () -> Unit) {
         ) {
             Column {
                 InfoFooter()
-                Button(
-                    onClick = { onDismiss() },
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    elevation = null
-                ) {
-                    Text(text = stringResource(id = R.string.ok))
+                if (showAds) {
+                    Button(
+                        onClick = { onRemoveAdsClick() },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        elevation = null
+                    ) {
+                        Text(text = stringResource(id = R.string.remove_ads))
+                    }
                 }
             }
         }

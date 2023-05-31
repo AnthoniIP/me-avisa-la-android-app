@@ -11,10 +11,22 @@ import kotlinx.coroutines.flow.first
 class PreferencesDataStore(private val context: Context) {
 
     private val hasPermissions = booleanPreferencesKey("has_permissions")
+    private val showAds = booleanPreferencesKey("show_ads")
 
     suspend fun storeHasPermissions(hasPermission: Boolean): Boolean {
         context.preferencesDataStore.edit { preferences ->
             preferences[hasPermissions] = hasPermission
+        }
+        return hasPermission
+    }
+
+    suspend fun readShowAds(): Boolean {
+        return context.preferencesDataStore.data.first()[showAds] ?: true
+    }
+
+    suspend fun storeShowAds(hasPermission: Boolean): Boolean {
+        context.preferencesDataStore.edit { preferences ->
+            preferences[showAds] = hasPermission
         }
         return hasPermission
     }

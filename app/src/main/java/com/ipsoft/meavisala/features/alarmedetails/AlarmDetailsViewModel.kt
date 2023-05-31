@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
+import com.ipsoft.meavisala.data.datastore.PreferencesDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlarmDetailsViewModel @Inject constructor(
-    private val alarmRepository: AlarmRepository
+    private val alarmRepository: AlarmRepository,
+    private val preferencesDataStore: PreferencesDataStore
 ) : ViewModel() {
 
     private val _currentLocation = MutableStateFlow(getInitialLocation())
@@ -26,6 +28,7 @@ class AlarmDetailsViewModel @Inject constructor(
     private val _currentZoom = mutableStateOf(3f)
     private val _notificationText = mutableStateOf("")
     private val _creationSuccess = mutableStateOf(false)
+    private val _showAds = mutableStateOf(true)
 
     val currentLocation: StateFlow<Location> = _currentLocation
     val isMapEditable: State<Boolean> = _isMapEditable
@@ -33,6 +36,11 @@ class AlarmDetailsViewModel @Inject constructor(
     val currentZoom: State<Float> = _currentZoom
     val notificationText: State<String> = _notificationText
     val creationSuccess: State<Boolean> = _creationSuccess
+    val showAds: State<Boolean> = _showAds
+
+    init {
+        loadShowAds()
+    }
 
     fun updateZoom(zoom: Float) {
         _currentZoom.value = zoom
@@ -40,6 +48,12 @@ class AlarmDetailsViewModel @Inject constructor(
 
     fun onDistanceSelected(distance: Distance) {
         _selectedDistance.value = distance
+    }
+
+    private fun loadShowAds() {
+        viewModelScope.launch {
+            _showAds.value = preferencesDataStore.readShowAds()
+        }
     }
 
     fun updateLocation(latitude: Double, longitude: Double) {
