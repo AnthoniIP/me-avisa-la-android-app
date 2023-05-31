@@ -1,11 +1,14 @@
 package com.ipsoft.meavisala.features.verticalscrolllayout
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 data class ChildLayout(
     val contentType: String = "",
@@ -18,7 +21,11 @@ fun VerticalScrollLayout(
     modifier: Modifier = Modifier,
     vararg childLayouts: ChildLayout
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         childLayouts.forEach { child ->
             if (child.items.isEmpty()) {
                 loadItem(child)

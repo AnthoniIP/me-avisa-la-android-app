@@ -1,7 +1,5 @@
 package com.ipsoft.meavisala.features.alarmedetails
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,34 +11,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.distances
 import com.ipsoft.meavisala.features.ads.BannerAdView
+import com.ipsoft.meavisala.features.map.MapPinOverlay
+import com.ipsoft.meavisala.features.map.MapViewContainer
+import com.ipsoft.meavisala.features.map.rememberMapViewWithLifecycle
 import com.ipsoft.meavisala.features.verticalscrolllayout.ChildLayout
 import com.ipsoft.meavisala.features.verticalscrolllayout.VerticalScrollLayout
 
@@ -55,9 +52,9 @@ fun AlarmDetailsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.add_new_alarm))
+                    Text(stringResource(id = R.string.add_new_alarm), style = MaterialTheme.typography.titleLarge)
                 },
                 navigationIcon = {
                     Icon(
@@ -69,14 +66,13 @@ fun AlarmDetailsScreen(
             )
         }
     ) { paddingValues ->
+        val creationComplete = viewModel.creationSuccess.value
+        if (creationComplete) {
+            onBackClick()
+        }
         val mapView = rememberMapViewWithLifecycle()
         VerticalScrollLayout(
             modifier = Modifier.padding(paddingValues),
-            ChildLayout(
-                content = {
-                    BannerAdView()
-                }
-            ),
             ChildLayout(
                 content = {
                     Text(
@@ -108,7 +104,40 @@ fun AlarmDetailsScreen(
                         selectedDistance = selectedDistance
                     )
                 }
+            ),
+            ChildLayout(
+                content = {
+                    OutlinedTextField(
+                        value = viewModel.notificationText.value,
+                        onValueChange = { text: String ->
+                            viewModel.updateNotificationText(text)
+                        },
+                        label = { Text(text = stringResource(id = R.string.notification_text)) },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Text
+                        ),
+                        singleLine = false,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp, 8.dp)
+                    )
+                }
+            ),
+            ChildLayout(
+                content = {
+                    Button(onClick = {
+                        viewModel.saveAlarm()
+                    }) {
+                        Text(text = stringResource(id = R.string.save))
+                    }
+                }
+            ),
+            ChildLayout(
+                content = {
+                    BannerAdView()
+                }
             )
+
         )
     }
 }
@@ -160,65 +189,6 @@ fun DistanceSelector(
                 Text(
                     text = distance.stringName,
                     style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MapPinOverlay() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Image(
-                modifier = Modifier.size(50.dp),
-                bitmap = ImageBitmap.imageResource(id = R.drawable.pin).asAndroidBitmap()
-                    .asImageBitmap(),
-                contentDescription = "Pin Image"
-            )
-        }
-        Box(
-            Modifier.weight(1f)
-        ) {}
-    }
-}
-
-@SuppressLint("MissingPermission")
-@Composable
-private fun MapViewContainer(
-    isEnabled: Boolean,
-    mapView: MapView,
-    currentZoom: Float,
-    viewModel: AlarmDetailsViewModel
-) {
-    AndroidView(
-        factory = { mapView }
-    ) {
-        mapView.getMapAsync { map ->
-
-            map.isMyLocationEnabled = true
-            map.uiSettings.apply {
-                setAllGesturesEnabled(isEnabled)
-                isZoomControlsEnabled = true
-                isMyLocationButtonEnabled = true
-                isCompassEnabled = true
-            }
-
-            val currentLocation = viewModel.currentLocation.value
-            val position = LatLng(currentLocation.latitude, currentLocation.longitude)
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, currentZoom))
-
-            map.setOnCameraIdleListener {
-                viewModel.updateZoom(map.cameraPosition.zoom)
-                val cameraPosition = map.cameraPosition
-                viewModel.updateLocation(
-                    cameraPosition.target.latitude,
-                    cameraPosition.target.longitude
                 )
             }
         }

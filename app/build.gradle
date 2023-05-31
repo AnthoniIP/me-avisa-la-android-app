@@ -91,7 +91,13 @@ android {
         implementation 'com.google.maps.android:maps-compose:2.11.4'
         implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
-        //ads
+        // ads
         implementation 'com.google.android.gms:play-services-ads:22.1.0'
+
+        // Room
+        def room_version = "2.5.1" // check latest version from docs
+
+        implementation "androidx.room:room-ktx:$room_version"
+        kapt "androidx.room:room-compiler:$room_version"
 
     }

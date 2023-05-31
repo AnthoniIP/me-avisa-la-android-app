@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.features.alarmedetails
+package com.ipsoft.meavisala.features.map
 
 import android.content.Context
 import android.os.Bundle
@@ -14,10 +14,13 @@ import com.google.android.gms.maps.MapView
 import com.ipsoft.meavisala.R
 
 @Composable
-fun rememberMapViewWithLifecycle(): MapView {
+fun rememberMapViewWithLifecycle(mapType: MapType = MapType.SCROLLABLE): MapView {
     val context = LocalContext.current
     val mapView = remember {
-        ScrollableMapView(context).apply {
+        when (mapType) {
+            MapType.NORMAL -> MapView(context)
+            MapType.SCROLLABLE -> ScrollableMapView(context)
+        }.apply {
             id = R.id.map
         }
     }
@@ -60,4 +63,9 @@ class ScrollableMapView(context: Context) : MapView(context) {
         }
         return super.dispatchTouchEvent(ev)
     }
+}
+
+enum class MapType {
+    NORMAL,
+    SCROLLABLE
 }

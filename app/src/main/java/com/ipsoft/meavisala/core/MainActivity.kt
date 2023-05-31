@@ -35,7 +35,8 @@ class MainActivity : ComponentActivity() {
     private val requiredPermissions = mutableListOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.INTERNET
+        Manifest.permission.INTERNET,
+        Manifest.permission.SET_ALARM
 
     ).apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

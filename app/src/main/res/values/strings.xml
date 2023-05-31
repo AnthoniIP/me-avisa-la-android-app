@@ -20,4 +20,17 @@
     <string name="background_location_notification_title">O aplicativo tem acesso a sua localização</string>
     <string name="select_distance">Distancia mínima para que o lembrete ser mostrado</string>
     <string name="on_local">Quando eu chegar no local</string>
+    <string name="save">criar alarme</string>
+    <string name="notification_text">Lembrete</string>
+    <string name="background_location_reached_notification_title">Você chegou ao destino</string>
+    <string name="we_will_notify_you_when_you_are_near">Não se preocupe, o alarme irá soar quando você chegar em um destino</string>
+    <string name="kms">quilometros</string>
+    <string name="notify_in">Notificar em</string>
+    <string name="enabled">Ativo:</string>
+    <string name="ok">OK</string>
+    <string name="developer_name">IPSoft</string>
+    <string name="version">v%1$s</string>
+    <string name="developed_by">desenvolvido por</string>
+    <string name="linktree_url">https://linktr.ee/ipsoft</string>
+    <string name="all_rights_reserved">CopyRight © 2023, IPSoft. Todos os direitos reservados</string>
 </resources>

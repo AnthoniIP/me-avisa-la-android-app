@@ -6,6 +6,16 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 
+fun Context.getVerCode(): String {
+    return try {
+        val pInfo = this.packageManager.getPackageInfo(this.packageName, 0)
+        pInfo.versionName
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
+}
+
 fun Context.hasLocationPermission(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         return ContextCompat.checkSelfPermission(
