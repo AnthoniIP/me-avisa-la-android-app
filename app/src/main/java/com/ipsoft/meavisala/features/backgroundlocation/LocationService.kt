@@ -58,7 +58,7 @@ class LocationService : Service() {
     private fun start() {
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.background_location_notification_title))
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.ic_location)
             .setOngoing(true)
 
         val notificationManager = getSystemService(
@@ -84,7 +84,6 @@ class LocationService : Service() {
                         updatedNotification.setContentText(
                             alarm.notificationText
                         )
-                        updatedNotification.setSmallIcon(R.drawable.ic_launcher_foreground)
                         updatedNotification.setOngoing(false)
                         stop()
                     }
