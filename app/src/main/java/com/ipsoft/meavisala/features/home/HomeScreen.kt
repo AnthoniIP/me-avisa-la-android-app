@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -25,17 +26,19 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,6 +55,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.model.AlarmEntity
+import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.defaultIpsoftSize
 import com.ipsoft.meavisala.core.utils.extensions.getVerCode
 import com.ipsoft.meavisala.core.utils.mediumPadding
@@ -65,8 +69,11 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
     onRemoveAdsClick: () -> Unit,
-    onAddNewAlarmClick: () -> Unit
+    onAddNewAlarmClick: () -> Unit,
 ) {
+    val showDeleteDialog = remember { mutableStateOf(false) }
+    val currentSelectedAlarm = remember { mutableStateOf<AlarmEntity?>(null) }
+
     val hasPermissions = viewModel.hasPermissions.value
     val alarmState = viewModel.alarms.value
     val showAds = viewModel.showAds.value
@@ -79,6 +86,18 @@ fun HomeScreen(
             viewModel.getAlarms()
             loadAlarm.value = false
         }
+    }
+
+    if (showDeleteDialog.value) {
+        DeleteDialog(
+            onDismiss = { showDeleteDialog.value = false },
+            onDeleteClick = {
+                currentSelectedAlarm.value?.let {
+                    viewModel.deleteAlarm(it)
+                    showDeleteDialog.value = false
+                }
+            }
+        )
     }
 
     Scaffold(
@@ -144,11 +163,56 @@ fun HomeScreen(
                     if (alarmState.alarms.isNotEmpty()) {
                         alarmState.alarms.sortedBy { it.id }.reversed().forEach { alarm ->
                             item {
-                                AlarmItem(alarm = alarm, viewModel)
+                                AlarmItem(
+                                    alarm = alarm,
+                                    viewModel,
+                                    currentSelectedAlarm,
+                                    showDeleteDialog
+                                )
                             }
                         }
                     } else {
                         item { EmptyAlarmList() }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DeleteDialog(onDismiss: () -> Unit, onDeleteClick: () -> Unit?) {
+    Dialog(
+        onDismissRequest = { onDismiss() }
+    ) {
+        Surface(
+            modifier = Modifier.wrapContentSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delete_alarm),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(id = R.string.delete_alarm_message),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = { onDismiss() }) {
+                        Text(text = stringResource(id = R.string.cancel))
+                    }
+                    TextButton(onClick = { onDeleteClick() }) {
+                        Text(text = stringResource(id = R.string.delete))
                     }
                 }
             }
@@ -184,7 +248,14 @@ fun AboutDialog(onDismiss: () -> Unit, onRemoveAdsClick: () -> Unit, showAds: Bo
 }
 
 @Composable
-fun AlarmItem(alarm: AlarmEntity, viewModel: HomeViewModel) {
+fun AlarmItem(
+    alarm: AlarmEntity,
+    viewModel: HomeViewModel,
+    currentSelectedAlarm: MutableState<AlarmEntity?>,
+    showDeleteDialog: MutableState<Boolean>,
+) {
+    val currentLocation = viewModel.currentLocation.value
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
@@ -221,13 +292,29 @@ fun AlarmItem(alarm: AlarmEntity, viewModel: HomeViewModel) {
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = stringResource(id = R.string.notify_in) + " " + alarm.minDistanceToNotifyText,
+                text = if (alarm.minDistanceToNotify == Distance.ON_LOCAL.distance) {
+                    stringResource(
+                        id = R.string.notify_on
+                    ) + " " + alarm.minDistanceToNotifyText.lowercase()
+                } else {
+                    stringResource(
+                        id = R.string.notify_in
+                    ) + " " + alarm.minDistanceToNotifyText
+                },
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
+            Text(
+                text = stringResource(id = R.string.you_are_this_distance) + " " + alarm.getDistanceInMeters(
+                    currentLocation
+                ).toInt() + " " + stringResource(id = R.string.away),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(smallPadding)
             ) {
                 Text(
                     text = stringResource(id = R.string.enabled),
@@ -238,8 +325,30 @@ fun AlarmItem(alarm: AlarmEntity, viewModel: HomeViewModel) {
                     viewModel.updateAlarm(alarm.copy(isEnable = it))
                 })
             }
+            IconButton(onClick = {
+                markToDeleteAndShowDeleteMessage(
+                    alarm,
+                    currentSelectedAlarm,
+                    showDeleteDialog
+                )
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = stringResource(id = R.string.delete),
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
         }
     }
+}
+
+fun markToDeleteAndShowDeleteMessage(
+    alarm: AlarmEntity,
+    currentSelectedAlarm: MutableState<AlarmEntity?>,
+    showDeleteDialog: MutableState<Boolean>,
+) {
+    showDeleteDialog.value = true
+    currentSelectedAlarm.value = alarm
 }
 
 @Composable

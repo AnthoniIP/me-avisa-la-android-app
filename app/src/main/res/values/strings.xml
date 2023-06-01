@@ -34,4 +34,11 @@
     <string name="linktree_url">https://linktr.ee/ipsoft</string>
     <string name="all_rights_reserved">CopyRight © 2023, IPSoft. Todos os direitos reservados</string>
     <string name="remove_ads">Remover anuncios</string>
+    <string name="you_are_this_distance">Você está a</string>
+    <string name="away">metros de distancia</string>
+    <string name="notify_on">notificar</string>
+    <string name="delete">Apagar alarme</string>
+    <string name="delete_alarm">Apagar alarme</string>
+    <string name="delete_alarm_message">Deseja realmente apagar esse alarme?</string>
+    <string name="cancel">Cancelar</string>
 </resources>
