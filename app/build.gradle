@@ -10,12 +10,16 @@ android {
     namespace 'com.ipsoft.meavisala'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId "com.ipsoft.meavisala"
         minSdk 24
         targetSdk 33
-        versionCode 4
-        versionName "0.4"
+        versionCode 5
+        versionName "0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,10 +28,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+            buildConfigField("boolean", "DEBUG", "true")
+        }
         release {
+
                 minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
+            buildConfigField("boolean", "DEBUG", "false")
         }}
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_17
@@ -101,8 +114,14 @@ android {
         implementation "androidx.room:room-ktx:$room_version"
         kapt "androidx.room:room-compiler:$room_version"
 
+        // Billing
         def billing_version = "6.0.0"
 
         implementation "com.android.billingclient:billing:$billing_version"
+
+        // Timber
+        implementation 'com.jakewharton.timber:timber:5.0.1'
+
+
 
     }

@@ -55,7 +55,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             preferencesDataStore.storeShowAds(showAds)
         }
-        loadShowAds()
     }
 
     fun saveHasPermissions(hasPermissions: Boolean) {

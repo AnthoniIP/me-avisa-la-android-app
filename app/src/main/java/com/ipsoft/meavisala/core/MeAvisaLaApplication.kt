@@ -5,9 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.ipsoft.meavisala.BuildConfig
 import com.ipsoft.meavisala.core.utils.NOTIFICATION_CHANNEL_ID
 import com.ipsoft.meavisala.core.utils.NOTIFICATION_CHANNEL_NAME
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 @HiltAndroidApp
 class MeAvisaLaApplication : Application() {
@@ -25,6 +27,10 @@ class MeAvisaLaApplication : Application() {
             ) as NotificationManager
 
             notificationManager.createNotificationChannel(channel)
+        }
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

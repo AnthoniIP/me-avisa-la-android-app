@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -36,7 +37,8 @@ class LocationService : Service() {
     lateinit var alarmRepository: AlarmRepository
 
     private val alarms = mutableListOf<AlarmEntity>()
-    private val saveAccessAlarms = alarms.toList()
+    private val saveAccessAlarms: List<AlarmEntity>
+        get() = alarms.toList()
 
     override fun onBind(intent: Intent?): IBinder? = null
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -72,8 +74,10 @@ class LocationService : Service() {
                     getString(R.string.we_will_notify_you_when_you_are_near)
                 )
                 updateAlarms()
+                Timber.d("Location: $location")
                 saveAccessAlarms.forEach { alarm ->
                     val distance = alarm.getDistanceInMeters(location)
+                    Timber.d("Actual Distance: $distance - Min Distance: ${alarm.minDistanceToNotify}")
                     if (distance <= alarm.minDistanceToNotify) {
                         ringAlarm()
                         updatedNotification.setContentTitle(
