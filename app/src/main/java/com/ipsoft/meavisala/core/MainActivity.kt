@@ -151,7 +151,7 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
                         }
                         composable(Screen.AlarmDetails.route) {
                             AlarmDetailsScreen {
-                                navController.popBackStack()
+                                navController.navigateUp()
                             }
                         }
                     }
