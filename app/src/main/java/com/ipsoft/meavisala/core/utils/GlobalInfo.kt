@@ -54,4 +54,30 @@ object GlobalInfo {
             fun onAdsUpdated(hasAds: Boolean)
         }
     }
+
+    object AlarmInfo {
+        private val listeners = mutableListOf<OnAlarmListener>()
+
+        var hasAlarm = false
+            set(value) {
+                notifyListeners()
+                field = value
+            }
+
+        private fun notifyListeners() {
+            listeners.forEach { it.onAlarmUpdated(hasAlarm) }
+        }
+
+        fun addListener(listener: OnAlarmListener) {
+            listeners.add(listener)
+        }
+
+        fun removeListener(listener: OnAlarmListener) {
+            listeners.remove(listener)
+        }
+
+        interface OnAlarmListener {
+            fun onAlarmUpdated(hasAlarm: Boolean)
+        }
+    }
 }

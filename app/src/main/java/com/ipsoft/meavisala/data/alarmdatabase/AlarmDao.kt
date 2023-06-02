@@ -22,7 +22,7 @@ interface AlarmDao {
     @Delete
     fun delete(alarmEntity: AlarmEntity)
 
-    @Query("SELECT * FROM alarm WHERE isEnable = 1")
+    @Query("SELECT * FROM alarm WHERE isEnabled = 1")
     fun getAllEnabledAlarm(): List<AlarmEntity>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

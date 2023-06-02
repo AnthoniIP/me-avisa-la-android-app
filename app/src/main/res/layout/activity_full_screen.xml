@@ -7,15 +7,27 @@
     tools:context=".features.fullscreen.FullScreenActivity">
 
     <TextView
+        android:id="@+id/alarm_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Teste Full Screen"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_min="wrap" />
+        app:layout_constraintWidth_min="wrap"
+        tools:text="Teste Full Screen" />
+
+    <Button
+        android:id="@+id/ok_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alarm_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

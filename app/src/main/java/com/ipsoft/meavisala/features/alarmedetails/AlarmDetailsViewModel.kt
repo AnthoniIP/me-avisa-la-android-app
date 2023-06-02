@@ -71,7 +71,7 @@ class AlarmDetailsViewModel @Inject constructor(
                     longitude = _currentLocation.value.longitude,
                     minDistanceToNotify = _selectedDistance.value.distance,
                     notificationText = _notificationText.value,
-                    isEnable = true,
+                    isEnabled = true,
                     minDistanceToNotifyText = _selectedDistance.value.stringName
                 )
             )

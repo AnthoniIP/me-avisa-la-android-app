@@ -45,6 +45,7 @@ class LocationService : Service() {
         when (intent?.action) {
             ACTION_START -> start()
             ACTION_STOP -> stop()
+            ACTION_UPDATE -> updateAlarms()
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -64,23 +65,16 @@ class LocationService : Service() {
             .setSmallIcon(R.drawable.ic_location)
             .setOngoing(true)
 
-        locationClient.getLocationUpdates(1000L)
+        locationClient.getLocationUpdates(UPDATE_INTERVAL)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
-                val updatedNotification = notification.setContentText(
-                    getString(R.string.we_will_notify_you_when_you_are_near)
-                )
-                updateAlarms()
                 Timber.d("Location: $location")
                 saveAccessAlarms.forEach { alarm ->
                     val distance = alarm.getDistanceInMeters(location)
                     Timber.d("Actual Distance: $distance - Min Distance: ${alarm.minDistanceToNotify}")
                     if (distance <= alarm.minDistanceToNotify) {
                         ringAlarm(alarm)
-                        updatedNotification.setContentText(
-                            alarm.notificationText
-                        )
-                        stop()
+                        alarmRepository.updateAlarm(alarm.copy(isEnabled = false))
                     }
                 }
             }
@@ -106,7 +100,7 @@ class LocationService : Service() {
     }
 
     private fun stop() {
-        stopForeground(STOP_FOREGROUND_DETACH)
+        stopForeground(true)
         stopSelf()
     }
 
@@ -118,5 +112,7 @@ class LocationService : Service() {
     companion object {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
+        const val ACTION_UPDATE = "ACTION_UPDATE"
+        const val UPDATE_INTERVAL = 5000L
     }
 }

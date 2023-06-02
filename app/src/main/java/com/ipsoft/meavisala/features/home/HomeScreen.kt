@@ -71,6 +71,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
     onRemoveAdsClick: () -> Unit,
+    onSwitchAlarmClick: (Boolean) -> Unit,
     onAddNewAlarmClick: () -> Unit
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
@@ -146,9 +147,27 @@ fun HomeScreen(
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(smallPadding)
         ) {
-            Spacer(modifier = Modifier.height(smallPadding))
             if (showAds) {
+                Spacer(modifier = Modifier.height(smallPadding))
                 BannerAdView()
+            }
+            Spacer(modifier = Modifier.height(smallPadding))
+            Row {
+                Text(
+                    text = stringResource(id = R.string.alarms_enabled),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(smallPadding)
+                )
+                Switch(
+                    checked = alarmState.alarmsEnabled,
+                    onCheckedChange = {
+                        viewModel.saveIsAlarmsEnabled(it)
+                        onSwitchAlarmClick(it)
+                    },
+                    modifier = Modifier.padding(smallPadding)
+                )
             }
             LazyColumn(
                 Modifier
@@ -162,6 +181,15 @@ fun HomeScreen(
                         MissingPermissions(onAllowPermissionClick = onAllowPermissionClick)
                     }
                 } else {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.alarms),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(smallPadding)
+                        )
+                    }
                     if (alarmState.alarms.isNotEmpty()) {
                         alarmState.alarms.sortedBy { it.id }.reversed().forEach { alarm ->
                             item {
@@ -340,8 +368,8 @@ fun AlarmItem(
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Switch(checked = alarm.isEnable, onCheckedChange = {
-                    viewModel.updateAlarm(alarm.copy(isEnable = it))
+                Switch(checked = alarm.isEnabled, onCheckedChange = {
+                    viewModel.updateAlarm(alarm.copy(isEnabled = it))
                 })
             }
             IconButton(onClick = {

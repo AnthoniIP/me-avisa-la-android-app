@@ -43,4 +43,6 @@
     <string name="cancel">Cancelar</string>
     <string name="message">Lembrete</string>
     <string name="no_message">Sem lembrete</string>
+    <string name="alarms">Alarmes\n</string>
+    <string name="alarms_enabled">Receber alarmes</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.GlobalInfo.AdsInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.AlarmInfo.hasAlarm
 import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo
 import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo.OnPermissionListener
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
@@ -43,6 +44,14 @@ class HomeViewModel @Inject constructor(
         loadHasPermissions()
         loadShowAds()
         getCurrentLocation()
+        getIsAlarmsEnabled()
+    }
+
+    private fun getIsAlarmsEnabled() {
+        viewModelScope.launch {
+            _alarms.value =
+                _alarms.value.copy(alarmsEnabled = preferencesDataStore.readIsAlarmsEnabled())
+        }
     }
 
     private fun getCurrentLocation() {
@@ -55,7 +64,8 @@ class HomeViewModel @Inject constructor(
 
     fun getAlarms() {
         viewModelScope.launch(Dispatchers.IO) {
-            _alarms.value = AlarmState(alarmRepository.getAllAlarms())
+            _alarms.value = _alarms.value.copy(alarms = alarmRepository.getAllAlarms())
+            hasAlarm = _alarms.value.alarms.isNotEmpty()
         }
     }
 
@@ -74,6 +84,13 @@ class HomeViewModel @Inject constructor(
     fun saveHasPermissions(hasPermissions: Boolean) {
         viewModelScope.launch {
             preferencesDataStore.storeHasPermissions(hasPermissions)
+        }
+    }
+
+    fun saveIsAlarmsEnabled(isEnabled: Boolean) {
+        viewModelScope.launch {
+            preferencesDataStore.storeIsAlarmsEnabled(isEnabled)
+            _alarms.value = _alarms.value.copy(alarmsEnabled = isEnabled)
         }
     }
 
@@ -109,6 +126,7 @@ class HomeViewModel @Inject constructor(
     }
 
     data class AlarmState(
-        val alarms: List<AlarmEntity> = emptyList()
+        val alarms: List<AlarmEntity> = emptyList(),
+        val alarmsEnabled: Boolean = false
     )
 }

@@ -12,7 +12,7 @@ data class AlarmEntity(
     val longitude: Double,
     val minDistanceToNotify: Long,
     val notificationText: String,
-    val isEnable: Boolean,
+    val isEnabled: Boolean,
     val minDistanceToNotifyText: String
 ) {
     fun getDistanceInMeters(location: Location): Float {

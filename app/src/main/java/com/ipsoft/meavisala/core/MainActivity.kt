@@ -2,6 +2,7 @@ package com.ipsoft.meavisala.core
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -35,6 +36,7 @@ import com.ipsoft.meavisala.core.ui.Screen
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
 import com.ipsoft.meavisala.core.utils.GlobalInfo
 import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo.hasPermissions
 import com.ipsoft.meavisala.features.ads.loadInterstitial
 import com.ipsoft.meavisala.features.ads.removeInterstitial
 import com.ipsoft.meavisala.features.alarmedetails.AlarmDetailsScreen
@@ -44,7 +46,7 @@ import com.ipsoft.meavisala.features.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
 
     private lateinit var handler: Handler
 
@@ -108,12 +110,6 @@ class MainActivity : ComponentActivity() {
             PermissionInfo.hasPermissions = hasPermissions
         }
         homeViewModel.saveHasPermissions(hasPermissions)
-        if (hasPermissions) {
-            Intent(this, LocationService::class.java).apply {
-                action = LocationService.ACTION_START
-                startService(this)
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,6 +133,17 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onRemoveAdsClick = {
                                     launchPurchaseFlow(signatureProduct)
+                                },
+                                onSwitchAlarmClick = { alarmsEnabled ->
+                                    when (alarmsEnabled) {
+                                        true -> {
+                                            startLocationService(this@MainActivity)
+                                        }
+
+                                        false -> {
+                                            stopLocationService(this@MainActivity)
+                                        }
+                                    }
                                 }
                             ) {
                                 navController.navigate(Screen.AlarmDetails.route)
@@ -173,6 +180,23 @@ class MainActivity : ComponentActivity() {
         restorePurchases()
 
         handler = Handler(this.mainLooper)
+        GlobalInfo.AlarmInfo.addListener(this)
+    }
+
+    private fun startLocationService(context: Context) {
+        if (hasPermissions) {
+            Intent(context, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+    }
+
+    private fun stopLocationService(context: Context) {
+        Intent(context, LocationService::class.java).apply {
+            action = LocationService.ACTION_STOP
+            startService(this)
+        }
     }
 
     fun establishConnection() {
@@ -268,6 +292,7 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         removeInterstitial()
+        GlobalInfo.AlarmInfo.removeListener(this)
     }
 
     private fun requestPermissions() {
@@ -276,5 +301,12 @@ class MainActivity : ComponentActivity() {
             requiredPermissions,
             0
         )
+    }
+
+    override fun onAlarmUpdated(hasAlarm: Boolean) {
+        Intent(this, LocationService::class.java).apply {
+            action = LocationService.ACTION_UPDATE
+            startService(this)
+        }
     }
 }

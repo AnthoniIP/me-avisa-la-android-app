@@ -11,6 +11,6 @@ abstract class AlarmDatabase : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "alarm_database"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 }
