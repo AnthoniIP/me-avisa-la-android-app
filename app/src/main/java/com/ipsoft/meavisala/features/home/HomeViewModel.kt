@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.meavisala.core.model.AlarmEntity
-import com.ipsoft.meavisala.core.utils.PermissionInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.AdsInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo.OnPermissionListener
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
 import com.ipsoft.meavisala.data.datastore.PreferencesDataStore
 import com.ipsoft.meavisala.features.backgroundlocation.LocationClient
@@ -22,8 +24,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val preferencesDataStore: PreferencesDataStore,
     private val alarmRepository: AlarmRepository,
-    private val locationClient: LocationClient,
-) : ViewModel(), PermissionInfo.OnPermissionListener {
+    private val locationClient: LocationClient
+) : ViewModel(), OnPermissionListener, AdsInfo.OnAdsListener {
 
     private val _currentLocation = mutableStateOf(Location(""))
     private val _alarms = mutableStateOf(AlarmState())
@@ -37,6 +39,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         PermissionInfo.addListener(this)
+        AdsInfo.addListener(this)
         loadHasPermissions()
         loadShowAds()
         getCurrentLocation()
@@ -83,6 +86,7 @@ class HomeViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         PermissionInfo.removeListener(this)
+        AdsInfo.removeListener(this)
     }
 
     override fun onPermissionUpdated(hasPermissions: Boolean) {
@@ -104,6 +108,13 @@ class HomeViewModel @Inject constructor(
     }
 
     data class AlarmState(
-        val alarms: List<AlarmEntity> = emptyList(),
+        val alarms: List<AlarmEntity> = emptyList()
     )
+
+    override fun onAdsUpdated(hasAds: Boolean) {
+        viewModelScope.launch {
+            preferencesDataStore.storeShowAds(hasAds)
+            _showAds.value = hasAds
+        }
+    }
 }

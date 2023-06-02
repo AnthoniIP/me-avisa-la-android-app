@@ -20,8 +20,8 @@ android {
         applicationId "com.ipsoft.meavisala"
         minSdk 24
         targetSdk 33
-        versionCode 5
-        versionName "0.5"
+        versionCode 6
+        versionName "0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -126,7 +126,6 @@ android {
 
         // Firebase
         implementation platform('com.google.firebase:firebase-bom:32.1.0')
-
         implementation 'com.google.firebase:firebase-crashlytics-ktx'
         implementation 'com.google.firebase:firebase-analytics-ktx'
 

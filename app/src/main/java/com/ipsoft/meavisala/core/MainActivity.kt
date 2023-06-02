@@ -34,7 +34,8 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import com.ipsoft.meavisala.core.ui.Screen
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
-import com.ipsoft.meavisala.core.utils.PermissionInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo
+import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo
 import com.ipsoft.meavisala.features.ads.loadInterstitial
 import com.ipsoft.meavisala.features.ads.removeInterstitial
 import com.ipsoft.meavisala.features.alarmedetails.AlarmDetailsScreen
@@ -232,7 +233,7 @@ class MainActivity : ComponentActivity() {
                     .build()
             ) { billingResult: BillingResult ->
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    homeViewModel.saveShowAds(false)
+                    GlobalInfo.AdsInfo.hasAds = false
                 }
             }
         }
@@ -255,11 +256,7 @@ class MainActivity : ComponentActivity() {
                             .setProductType(BillingClient.ProductType.INAPP).build()
                     ) { billingResult1: BillingResult, list: List<Purchase?> ->
                         if (billingResult1.responseCode == BillingClient.BillingResponseCode.OK) {
-                            if (list.isNotEmpty()) {
-                                homeViewModel.saveShowAds(false)
-                            } else {
-                                homeViewModel.saveShowAds(true)
-                            }
+                            GlobalInfo.AdsInfo.hasAds = list.isEmpty()
                         }
                     }
                 }

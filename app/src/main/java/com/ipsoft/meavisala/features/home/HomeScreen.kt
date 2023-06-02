@@ -69,7 +69,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onAllowPermissionClick: () -> Unit,
     onRemoveAdsClick: () -> Unit,
-    onAddNewAlarmClick: () -> Unit,
+    onAddNewAlarmClick: () -> Unit
 ) {
     val showDeleteDialog = remember { mutableStateOf(false) }
     val currentSelectedAlarm = remember { mutableStateOf<AlarmEntity?>(null) }
@@ -252,7 +252,7 @@ fun AlarmItem(
     alarm: AlarmEntity,
     viewModel: HomeViewModel,
     currentSelectedAlarm: MutableState<AlarmEntity?>,
-    showDeleteDialog: MutableState<Boolean>,
+    showDeleteDialog: MutableState<Boolean>
 ) {
     val currentLocation = viewModel.currentLocation.value
 
@@ -345,7 +345,7 @@ fun AlarmItem(
 fun markToDeleteAndShowDeleteMessage(
     alarm: AlarmEntity,
     currentSelectedAlarm: MutableState<AlarmEntity?>,
-    showDeleteDialog: MutableState<Boolean>,
+    showDeleteDialog: MutableState<Boolean>
 ) {
     showDeleteDialog.value = true
     currentSelectedAlarm.value = alarm
