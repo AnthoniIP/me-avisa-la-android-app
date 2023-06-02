@@ -30,11 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.distances
+import com.ipsoft.meavisala.core.utils.extraLargePadding
+import com.ipsoft.meavisala.core.utils.largePadding
+import com.ipsoft.meavisala.core.utils.mapHeight
+import com.ipsoft.meavisala.core.utils.smallPadding
 import com.ipsoft.meavisala.features.ads.BannerAdView
 import com.ipsoft.meavisala.features.ads.showInterstitial
 import com.ipsoft.meavisala.features.map.MapPinOverlay
@@ -90,13 +93,13 @@ fun AlarmDetailsScreen(
                     Text(
                         text = stringResource(id = R.string.select_place_on_map),
                         style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.padding(smallPadding)
                     )
                 }
             ),
             ChildLayout(
                 content = {
-                    Box(modifier = Modifier.height(300.dp)) {
+                    Box(modifier = Modifier.height(mapHeight)) {
                         MapViewContainer(
                             viewModel.isMapEditable.value,
                             mapView,
@@ -131,7 +134,7 @@ fun AlarmDetailsScreen(
                         singleLine = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp, 8.dp)
+                            .padding(largePadding, smallPadding)
                     )
                 }
             ),
@@ -161,7 +164,7 @@ fun DistanceSelector(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(largePadding)
             .fillMaxWidth()
     ) {
         Text(
@@ -169,7 +172,7 @@ fun DistanceSelector(
             style = MaterialTheme.typography.titleSmall
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(smallPadding))
 
         distances.forEach { distance ->
             Row(
@@ -181,7 +184,7 @@ fun DistanceSelector(
                             onDistanceSelected(distance)
                         }
                     )
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = largePadding, vertical = smallPadding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
@@ -193,10 +196,10 @@ fun DistanceSelector(
                         selectedColor = MaterialTheme.colorScheme.primary,
                         unselectedColor = MaterialTheme.colorScheme.onSurface
                     ),
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(extraLargePadding)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(smallPadding))
 
                 Text(
                     text = distance.stringName,

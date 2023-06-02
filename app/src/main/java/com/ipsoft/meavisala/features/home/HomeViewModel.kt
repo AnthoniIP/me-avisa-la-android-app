@@ -71,12 +71,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun saveShowAds(showAds: Boolean) {
-        viewModelScope.launch {
-            preferencesDataStore.storeShowAds(showAds)
-        }
-    }
-
     fun saveHasPermissions(hasPermissions: Boolean) {
         viewModelScope.launch {
             preferencesDataStore.storeHasPermissions(hasPermissions)
@@ -107,14 +101,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    data class AlarmState(
-        val alarms: List<AlarmEntity> = emptyList()
-    )
-
     override fun onAdsUpdated(hasAds: Boolean) {
         viewModelScope.launch {
             preferencesDataStore.storeShowAds(hasAds)
             _showAds.value = hasAds
         }
     }
+
+    data class AlarmState(
+        val alarms: List<AlarmEntity> = emptyList()
+    )
 }

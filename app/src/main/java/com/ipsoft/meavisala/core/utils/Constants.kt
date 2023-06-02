@@ -7,8 +7,11 @@ const val NOTIFICATION_CHANNEL_NAME = "Alarm notifications"
 
 val smallPadding = 4.dp
 val mediumPadding = 8.dp
+val largePadding = 16.dp
+val extraLargePadding = 32.dp
 
 val defaultImageSize = 180.dp
+val mapHeight = 300.dp
 val defaultIpsoftSize = defaultImageSize * 0.5f
 
 enum class Distance(val distance: Long, val stringName: String) {

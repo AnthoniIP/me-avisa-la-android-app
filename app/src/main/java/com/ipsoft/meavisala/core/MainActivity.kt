@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -141,9 +140,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Screen.AlarmDetails.route) {
                             AlarmDetailsScreen {
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    navController.popBackStack()
-                                }, 1000)
+                                navController.popBackStack()
                             }
                         }
                     }

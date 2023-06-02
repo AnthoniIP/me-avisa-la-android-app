@@ -58,6 +58,7 @@ import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.defaultIpsoftSize
 import com.ipsoft.meavisala.core.utils.extensions.getVerCode
+import com.ipsoft.meavisala.core.utils.largePadding
 import com.ipsoft.meavisala.core.utils.mediumPadding
 import com.ipsoft.meavisala.core.utils.smallPadding
 import com.ipsoft.meavisala.features.ads.BannerAdView
@@ -79,13 +80,10 @@ fun HomeScreen(
     val showAds = viewModel.showAds.value
 
     val showAboutDialog = remember { mutableStateOf(false) }
-    val loadAlarm = remember { mutableStateOf(true) }
+    remember { mutableStateOf(true) }
 
-    LaunchedEffect(loadAlarm.value) {
-        if (loadAlarm.value) {
-            viewModel.getAlarms()
-            loadAlarm.value = false
-        }
+    LaunchedEffect(true) {
+        viewModel.getAlarms()
     }
 
     if (showDeleteDialog.value) {
@@ -105,7 +103,7 @@ fun HomeScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(smallPadding),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -137,14 +135,13 @@ fun HomeScreen(
                 showAds = showAds
             )
         }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(smallPadding)
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(smallPadding))
             if (showAds) {
                 BannerAdView()
             }
@@ -152,8 +149,8 @@ fun HomeScreen(
                 Modifier
                     .weight(1f)
                     .fillMaxSize()
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(smallPadding),
+                verticalArrangement = Arrangement.spacedBy(largePadding)
             ) {
                 if (!hasPermissions) {
                     item {
@@ -191,19 +188,19 @@ fun DeleteDialog(onDismiss: () -> Unit, onDeleteClick: () -> Unit?) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(largePadding)
                     .fillMaxWidth()
             ) {
                 Text(
                     text = stringResource(id = R.string.delete_alarm),
                     style = MaterialTheme.typography.titleMedium
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(smallPadding))
                 Text(
                     text = stringResource(id = R.string.delete_alarm_message),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(largePadding))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -235,7 +232,7 @@ fun AboutDialog(onDismiss: () -> Unit, onRemoveAdsClick: () -> Unit, showAds: Bo
                     Button(
                         onClick = { onRemoveAdsClick() },
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(largePadding)
                             .fillMaxWidth(),
                         elevation = null
                     ) {
@@ -259,9 +256,9 @@ fun AlarmItem(
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
-                .padding(0.dp, 0.dp, 0.dp, 16.dp)
+                .padding(0.dp, 0.dp, 0.dp, largePadding)
                 .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(smallPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(modifier = Modifier.height(300.dp)) {
@@ -366,7 +363,7 @@ fun MissingPermissions(onAllowPermissionClick: () -> Unit) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(largePadding)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -377,13 +374,13 @@ fun MissingPermissions(onAllowPermissionClick: () -> Unit) {
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(smallPadding))
             Text(
                 text = stringResource(id = R.string.missing_permissions_info),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
             )
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(smallPadding))
             Button(onClick = onAllowPermissionClick) {
                 Text(text = stringResource(id = R.string.allow_permission))
             }
