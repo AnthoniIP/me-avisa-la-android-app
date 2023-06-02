@@ -28,6 +28,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -108,7 +109,11 @@ fun HomeScreen(
                     ) {
                         Text(
                             stringResource(id = R.string.app_name),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier
+                                .weight(1f),
+                            maxLines = 1,
+                            textAlign = TextAlign.Center
                         )
                         Icon(
                             imageVector = Icons.Filled.Info,
@@ -282,12 +287,29 @@ fun AlarmItem(
                 )
                 MapPinOverlay()
             }
-            Text(
-                text = alarm.notificationText,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium
-            )
+            if (alarm.notificationText.isNotEmpty()) {
+                Text(
+                    text = stringResource(id = R.string.message),
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                OutlinedTextField(
+                    value = alarm.notificationText,
+                    onValueChange = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(mediumPadding),
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    readOnly = true
+                )
+            } else {
+                Text(
+                    text = stringResource(id = R.string.no_message),
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
             Text(
                 text = if (alarm.minDistanceToNotify == Distance.ON_LOCAL.distance) {
                     stringResource(

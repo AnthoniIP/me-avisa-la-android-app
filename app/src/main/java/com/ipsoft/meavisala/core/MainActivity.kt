@@ -58,9 +58,13 @@ class MainActivity : ComponentActivity() {
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.INTERNET,
-        Manifest.permission.SET_ALARM
-
+        Manifest.permission.SET_ALARM,
+        Manifest.permission.WAKE_LOCK
     ).apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            add(Manifest.permission.USE_FULL_SCREEN_INTENT)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(Manifest.permission.POST_NOTIFICATIONS)
         }

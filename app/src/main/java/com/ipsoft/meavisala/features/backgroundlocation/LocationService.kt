@@ -1,7 +1,6 @@
 package com.ipsoft.meavisala.features.backgroundlocation
 
 import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -12,6 +11,7 @@ import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.NOTIFICATION_CHANNEL_ID
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
+import com.ipsoft.meavisala.features.soundalarm.ALARM_DESCRIPTION
 import com.ipsoft.meavisala.features.soundalarm.AlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -60,12 +60,9 @@ class LocationService : Service() {
     private fun start() {
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(getString(R.string.background_location_notification_title))
+            .setContentText(getString(R.string.we_will_notify_you_when_you_are_near))
             .setSmallIcon(R.drawable.ic_location)
             .setOngoing(true)
-
-        val notificationManager = getSystemService(
-            Context.NOTIFICATION_SERVICE
-        ) as NotificationManager
 
         locationClient.getLocationUpdates(1000L)
             .catch { e -> e.printStackTrace() }
@@ -79,29 +76,23 @@ class LocationService : Service() {
                     val distance = alarm.getDistanceInMeters(location)
                     Timber.d("Actual Distance: $distance - Min Distance: ${alarm.minDistanceToNotify}")
                     if (distance <= alarm.minDistanceToNotify) {
-                        ringAlarm()
-                        updatedNotification.setContentTitle(
-                            getString(
-                                R.string.background_location_reached_notification_title
-                            )
-                        )
+                        ringAlarm(alarm)
                         updatedNotification.setContentText(
                             alarm.notificationText
                         )
-                        updatedNotification.setOngoing(false)
                         stop()
                     }
                 }
-                notificationManager.notify(1, updatedNotification.build())
             }
             .launchIn(serviceScope)
 
         startForeground(1, notification.build())
     }
 
-    private fun ringAlarm() {
+    private fun ringAlarm(alarm: AlarmEntity) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
+        intent.putExtra(ALARM_DESCRIPTION, alarm.notificationText)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             0,
