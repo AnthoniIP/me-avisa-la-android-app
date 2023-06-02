@@ -87,6 +87,9 @@ fun HomeScreen(
     LaunchedEffect(true) {
         viewModel.getAlarms()
     }
+    LaunchedEffect(alarmState.alarmsEnabled) {
+        onSwitchAlarmClick(alarmState.alarmsEnabled)
+    }
 
     if (showDeleteDialog.value) {
         DeleteDialog(
@@ -164,7 +167,6 @@ fun HomeScreen(
                     checked = alarmState.alarmsEnabled,
                     onCheckedChange = {
                         viewModel.saveIsAlarmsEnabled(it)
-                        onSwitchAlarmClick(it)
                     },
                     modifier = Modifier.padding(smallPadding)
                 )

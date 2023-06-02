@@ -17,7 +17,7 @@
     <string name="select_place_on_map">Selecione um lugar no mapa</string>
     <string name="or">ou</string>
     <string name="background_location_notification_title">O aplicativo tem acesso à sua localização</string>
-    <string name="select_distance">Distância mínima para que o lembrete seja mostrado</string>
+    <string name="select_distance">Distância mínima para o alarme soar</string>
     <string name="on_local">Quando eu chegar ao local</string>
     <string name="save">Criar alarme</string>
     <string name="notification_text">Lembrete</string>

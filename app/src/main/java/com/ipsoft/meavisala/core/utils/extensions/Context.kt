@@ -32,7 +32,7 @@ fun Context.showNotificationWithFullScreenIntent(
     isLockScreen: Boolean = false,
     channelId: String = NOTIFICATION_CHANNEL_ID,
     title: String = "Você chegou em um destino!",
-    description: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    description: String = ""
 
 ) {
     val builder = NotificationCompat.Builder(this, channelId)

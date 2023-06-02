@@ -14,7 +14,10 @@ class AlarmReceiver : BroadcastReceiver() {
         mediaPlayer.start()
         if (intent.getBooleanExtra(LOCK_SCREEN_KEY, true)) {
             context.showNotificationWithFullScreenIntent(
-                true
+                true,
+                description = intent.getStringExtra(
+                    ALARM_DESCRIPTION
+                ) ?: ""
             )
         } else {
             context.showNotificationWithFullScreenIntent(

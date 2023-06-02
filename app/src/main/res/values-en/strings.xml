@@ -16,7 +16,7 @@
     <string name="select_place_on_map">Select a place on the map</string>
     <string name="or">or</string>
     <string name="background_location_notification_title">The app has access to your location</string>
-    <string name="select_distance">Minimum distance for the reminder to be shown</string>
+    <string name="select_distance">Minimum distance to ring alarm</string>
     <string name="on_local">When I arrive at the location</string>
     <string name="save">Create Alarm</string>
     <string name="notification_text">Reminder</string>
