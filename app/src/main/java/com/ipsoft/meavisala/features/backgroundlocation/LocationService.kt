@@ -9,6 +9,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.model.AlarmEntity
+import com.ipsoft.meavisala.core.utils.GlobalInfo.AlarmInfo.alarmListUpdated
 import com.ipsoft.meavisala.core.utils.NOTIFICATION_CHANNEL_ID
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
 import com.ipsoft.meavisala.features.soundalarm.ALARM_DESCRIPTION
@@ -75,6 +76,7 @@ class LocationService : Service() {
                     if (distance <= alarm.minDistanceToNotify) {
                         ringAlarm(alarm)
                         alarmRepository.updateAlarm(alarm.copy(isEnabled = false))
+                        alarmListUpdated = true
                     }
                 }
             }

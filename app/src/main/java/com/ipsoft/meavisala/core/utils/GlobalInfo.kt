@@ -8,8 +8,8 @@ object GlobalInfo {
 
         var hasPermissions = false
             set(value) {
-                notifyListeners()
                 field = value
+                notifyListeners()
             }
 
         private fun notifyListeners() {
@@ -34,7 +34,6 @@ object GlobalInfo {
 
         var hasAds = true
             set(value) {
-                notifyListeners()
                 field = value
                 notifyListeners()
             }
@@ -59,14 +58,14 @@ object GlobalInfo {
     object AlarmInfo {
         private val listeners = mutableListOf<OnAlarmListener>()
 
-        var hasAlarm = false
+        var alarmListUpdated = false
             set(value) {
-                notifyListeners()
                 field = value
+                notifyListeners()
             }
 
         private fun notifyListeners() {
-            listeners.forEach { it.onAlarmUpdated(hasAlarm) }
+            listeners.forEach { it.onAlarmUpdated(alarmListUpdated) }
         }
 
         fun addListener(listener: OnAlarmListener) {

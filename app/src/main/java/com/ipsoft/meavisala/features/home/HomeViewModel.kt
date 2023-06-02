@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.GlobalInfo.AdsInfo
-import com.ipsoft.meavisala.core.utils.GlobalInfo.AlarmInfo.hasAlarm
+import com.ipsoft.meavisala.core.utils.GlobalInfo.AlarmInfo.alarmListUpdated
 import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo
 import com.ipsoft.meavisala.core.utils.GlobalInfo.PermissionInfo.OnPermissionListener
 import com.ipsoft.meavisala.data.alarmdatabase.repository.AlarmRepository
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
     fun getAlarms() {
         viewModelScope.launch(Dispatchers.IO) {
             _alarms.value = _alarms.value.copy(alarms = alarmRepository.getAllAlarms())
-            hasAlarm = _alarms.value.alarms.isNotEmpty()
+            alarmListUpdated = _alarms.value.alarms.isNotEmpty()
         }
     }
 
