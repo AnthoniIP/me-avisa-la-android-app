@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "112955536373",
+    "project_id": "me-avisa-la",
+    "storage_bucket": "me-avisa-la.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112955536373:android:1e2d50f8d6987e55cb26bc",
+        "android_client_info": {
+          "package_name": "com.ipsoft.meavisala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112955536373-c3bpr7720rnq9oi5oruvjoq5hqv7b4ql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipsoft.meavisala",
+            "certificate_hash": "e52469ab51d8126b68800836ab789d7b2469dff4"
+          }
+        },
+        {
+          "client_id": "112955536373-7h8bipgt9aj0mjrmqo003g85mhcck4pu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj9ISzr8t2XpirqV_PGhSVarZ0PPaepew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112955536373-7h8bipgt9aj0mjrmqo003g85mhcck4pu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

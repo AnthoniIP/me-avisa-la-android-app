@@ -22,13 +22,13 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val preferencesDataStore: PreferencesDataStore,
     private val alarmRepository: AlarmRepository,
-    private val locationClient: LocationClient
+    private val locationClient: LocationClient,
 ) : ViewModel(), PermissionInfo.OnPermissionListener {
 
     private val _currentLocation = mutableStateOf(Location(""))
     private val _alarms = mutableStateOf(AlarmState())
     private val _hasPermissions = mutableStateOf(false)
-    private val _showAds = mutableStateOf(true)
+    private val _showAds = mutableStateOf(false)
 
     val hasPermissions: State<Boolean> = _hasPermissions
     val alarms: State<AlarmState> = _alarms
@@ -104,6 +104,6 @@ class HomeViewModel @Inject constructor(
     }
 
     data class AlarmState(
-        val alarms: List<AlarmEntity> = emptyList()
+        val alarms: List<AlarmEntity> = emptyList(),
     )
 }
