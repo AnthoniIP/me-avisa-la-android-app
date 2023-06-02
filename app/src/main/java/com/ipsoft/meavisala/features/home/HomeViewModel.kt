@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
     private val _currentLocation = mutableStateOf(Location(""))
     private val _alarms = mutableStateOf(AlarmState())
     private val _hasPermissions = mutableStateOf(false)
-    private val _showAds = mutableStateOf(false)
+    private val _showAds = mutableStateOf(true)
 
     val hasPermissions: State<Boolean> = _hasPermissions
     val alarms: State<AlarmState> = _alarms

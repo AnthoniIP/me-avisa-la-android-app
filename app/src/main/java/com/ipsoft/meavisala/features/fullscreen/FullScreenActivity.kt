@@ -1,13 +1,13 @@
 package com.ipsoft.meavisala.features.fullscreen
 
-import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.features.soundalarm.ALARM_DESCRIPTION
 
-class FullScreenActivity : Activity() {
+class FullScreenActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen)

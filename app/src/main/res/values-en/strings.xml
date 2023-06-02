@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notify Me There</string>
+    <string name="permission_title">Allow Location</string>
+    <string name="permission_disclaimer">To ensure the proper functioning of the application and display alarms at desired locations, please authorize the use of location.</string>
+    <string name="pref_key">location_tracking_prefs</string>
+    <string name="home">Home</string>
+    <string name="cart">Alarm Details</string>
+    <string name="add_new_alarm">Add New Alarm</string>
+    <string name="back">Back</string>
+    <string name="empty_alarm_list">You haven\'t added any alarms yet</string>
+    <string name="missing_permissions">Location Permission</string>
+    <string name="allow_permission">Allow</string>
+    <string name="missing_permissions_info">To ensure proper functioning of the alarm, please allow this application to access the device\'s location.</string>
+    <string name="google_maps_key">***REMOVED***</string>
+    <string name="select_place_on_map">Select a place on the map</string>
+    <string name="or">or</string>
+    <string name="background_location_notification_title">The app has access to your location</string>
+    <string name="select_distance">Minimum distance for the reminder to be shown</string>
+    <string name="on_local">When I arrive at the location</string>
+    <string name="save">Create Alarm</string>
+    <string name="notification_text">Reminder</string>
+    <string name="background_location_reached_notification_title">You\'ve arrived at your destination</string>
+    <string name="we_will_notify_you_when_you_are_near">Don\'t worry, the alarm will sound when you reach a destination</string>
+    <string name="kms">kilometers</string>
+    <string name="notify_in">Notify in</string>
+    <string name="enabled">Enabled:</string>
+    <string name="developer_name">IPSoft</string>
+    <string name="version">v%1$s</string>
+    <string name="developed_by">Developed by</string>
+    <string name="linktree_url">https://linktr.ee/ipsoft</string>
+    <string name="all_rights_reserved">© 2023, IPSoft. All rights reserved</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="you_are_this_distance">You are</string>
+    <string name="away">meters away</string>
+    <string name="notify_on">Notify on</string>
+    <string name="delete">Delete Alarm</string>
+    <string name="delete_alarm">Delete Alarm</string>
+    <string name="delete_alarm_message">Do you really want to delete this alarm?</string>
+    <string name="cancel">Cancel</string>
+    <string name="message">Reminder</string>
+    <string name="no_message">No reminder</string>
+    <string name="alarms">Alarms\n</string>
+    <string name="alarms_enabled">Receive alarms</string>
+    <string name="play_services_fail">Failed to connect to payment server, please try again.</string>
+</resources>

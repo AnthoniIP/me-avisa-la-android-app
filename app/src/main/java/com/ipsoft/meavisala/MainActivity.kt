@@ -1,4 +1,4 @@
-package com.ipsoft.meavisala.core
+package com.ipsoft.meavisala
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -54,7 +55,7 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
 
     private val homeViewModel: HomeViewModel by viewModels()
 
-    private lateinit var signatureProduct: ProductDetails
+    private var signatureProduct: ProductDetails? = null
 
     private val requiredPermissions = mutableListOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -132,7 +133,20 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
                                     requestPermissions()
                                 },
                                 onRemoveAdsClick = {
-                                    launchPurchaseFlow(signatureProduct)
+                                    if (::billingClient.isInitialized) {
+                                        if (signatureProduct != null) {
+                                            signatureProduct?.let { signatureProduct ->
+                                                launchPurchaseFlow(signatureProduct)
+                                            }
+                                        }
+                                    } else {
+                                        restorePurchases()
+                                        Toast.makeText(
+                                            applicationContext,
+                                            getString(R.string.play_services_fail),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 },
                                 onSwitchAlarmClick = { alarmsEnabled ->
                                     when (alarmsEnabled) {
@@ -266,9 +280,9 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
 
     private fun restorePurchases() {
         billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
-            .setListener { _: BillingResult?, _: List<Purchase?>? -> }
+            .setListener { billingResult: BillingResult?, list: List<Purchase?>? -> }
             .build()
-        val finalBillingClient = billingClient
+        val finalBillingClient: BillingClient = billingClient
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
                 establishConnection()

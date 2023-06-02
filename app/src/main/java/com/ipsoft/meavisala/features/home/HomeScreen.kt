@@ -169,6 +169,13 @@ fun HomeScreen(
                     modifier = Modifier.padding(smallPadding)
                 )
             }
+            Text(
+                text = stringResource(id = R.string.alarms),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(smallPadding)
+            )
             LazyColumn(
                 Modifier
                     .weight(1f)
@@ -181,15 +188,6 @@ fun HomeScreen(
                         MissingPermissions(onAllowPermissionClick = onAllowPermissionClick)
                     }
                 } else {
-                    item {
-                        Text(
-                            text = stringResource(id = R.string.alarms),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(smallPadding)
-                        )
-                    }
                     if (alarmState.alarms.isNotEmpty()) {
                         alarmState.alarms.sortedBy { it.id }.reversed().forEach { alarm ->
                             item {

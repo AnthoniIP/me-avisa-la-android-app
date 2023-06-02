@@ -32,10 +32,11 @@ object GlobalInfo {
     object AdsInfo {
         private val listeners = mutableListOf<OnAdsListener>()
 
-        var hasAds = false
+        var hasAds = true
             set(value) {
                 notifyListeners()
                 field = value
+                notifyListeners()
             }
 
         private fun notifyListeners() {
