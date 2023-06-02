@@ -280,7 +280,7 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
 
     private fun restorePurchases() {
         billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
-            .setListener { billingResult: BillingResult?, list: List<Purchase?>? -> }
+            .setListener { _: BillingResult?, _: List<Purchase?>? -> }
             .build()
         val finalBillingClient: BillingClient = billingClient
         billingClient.startConnection(object : BillingClientStateListener {
