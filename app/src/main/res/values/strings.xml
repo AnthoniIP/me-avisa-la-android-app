@@ -12,7 +12,7 @@
     <string name="empty_alarm_list">Você ainda não adicionou nenhum alarme</string>
     <string name="missing_permissions">Permissão de localização</string>
     <string name="allow_permission">Permitir</string>
-    <string name="missing_permissions_info">Para que o alarme funcione corretamente, por favor permita que este aplicativo acesse a localização do dispositivo.</string>
+    <string name="missing_permissions_info">Para que o alarme funcione corretamente, por favor permita que este aplicativo acesse a localização do dispositivo em segundo plano e envie notificações. Dessa forma você poderá ser notificado sempre que chegar em uma localização selecionada.</string>
     <string name="google_maps_key">***REMOVED***</string>
     <string name="select_place_on_map">Selecione um lugar no mapa</string>
     <string name="or">ou</string>
@@ -30,7 +30,7 @@
     <string name="developer_name">IPSoft</string>
     <string name="version">v%1$s</string>
     <string name="developed_by">Desenvolvido por</string>
-    <string name="linktree_url">https://linktr.ee/ipsoft</string>
+    <string name="linktree_url">https://ipirangasoft.com</string>
     <string name="all_rights_reserved">© 2023, IPSoft. Todos os direitos reservados</string>
     <string name="remove_ads">Remover anúncios</string>
     <string name="you_are_this_distance">Você está a</string>
@@ -45,4 +45,5 @@
     <string name="alarms">Alarmes\n</string>
     <string name="alarms_enabled">Receber alarmes</string>
     <string name="play_services_fail">Falha em conectar ao servidor de pagamentos, por favor tente novamente.</string>
+    <string name="allow_location_permission">Por favor autorize o aplicativo a acessar sua localização</string>
 </resources>

@@ -59,6 +59,7 @@ import com.ipsoft.meavisala.core.model.AlarmEntity
 import com.ipsoft.meavisala.core.utils.Distance
 import com.ipsoft.meavisala.core.utils.defaultIpsoftSize
 import com.ipsoft.meavisala.core.utils.extensions.getVerCode
+import com.ipsoft.meavisala.core.utils.extensions.showMsg
 import com.ipsoft.meavisala.core.utils.largePadding
 import com.ipsoft.meavisala.core.utils.mediumPadding
 import com.ipsoft.meavisala.core.utils.smallPadding
@@ -74,6 +75,8 @@ fun HomeScreen(
     onSwitchAlarmClick: (Boolean) -> Unit,
     onAddNewAlarmClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val showDeleteDialog = remember { mutableStateOf(false) }
     val currentSelectedAlarm = remember { mutableStateOf<AlarmEntity?>(null) }
 
@@ -129,7 +132,15 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = if (hasPermissions) onAddNewAlarmClick else onAllowPermissionClick) {
+            FloatingActionButton(onClick = {
+                if (hasPermissions) {
+                    onAddNewAlarmClick()
+                } else {
+                    context.showMsg(
+                        context.getString(R.string.allow_location_permission)
+                    )
+                }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = stringResource(id = R.string.add_new_alarm)

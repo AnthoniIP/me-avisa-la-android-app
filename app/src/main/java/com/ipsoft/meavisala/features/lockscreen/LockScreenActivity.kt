@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.ipsoft.meavisala.R
 import com.ipsoft.meavisala.core.ui.theme.MeAvisaLaTheme
 import com.ipsoft.meavisala.core.utils.extensions.turnScreenOffAndKeyguardOn
@@ -40,7 +41,7 @@ class LockScreenActivity : ComponentActivity() {
     fun FullScreenContent() {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(

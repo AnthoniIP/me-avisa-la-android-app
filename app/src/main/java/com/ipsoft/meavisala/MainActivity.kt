@@ -115,7 +115,6 @@ class MainActivity : ComponentActivity(), GlobalInfo.AlarmInfo.OnAlarmListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestPermissions()
         setContent {
             MeAvisaLaTheme {
                 Surface(

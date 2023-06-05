@@ -11,7 +11,7 @@
     <string name="empty_alarm_list">You haven\'t added any alarms yet</string>
     <string name="missing_permissions">Location Permission</string>
     <string name="allow_permission">Allow</string>
-    <string name="missing_permissions_info">To ensure proper functioning of the alarm, please allow this application to access the device\'s location.</string>
+    <string name="missing_permissions_info">For the alarm to work properly, please allow this application to access the device\'s location in the background and send notifications. This way, you will be notified whenever you arrive at a selected location.</string>
     <string name="google_maps_key">***REMOVED***</string>
     <string name="select_place_on_map">Select a place on the map</string>
     <string name="or">or</string>
@@ -43,4 +43,5 @@
     <string name="alarms">Alarms\n</string>
     <string name="alarms_enabled">Receive alarms</string>
     <string name="play_services_fail">Failed to connect to payment server, please try again.</string>
+    <string name="allow_location_permission">Please authorize the application to access your location.</string>
 </resources>

@@ -10,6 +10,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.ipsoft.meavisala.R
@@ -101,6 +102,10 @@ fun Context.hasLocationPermission(): Boolean {
         this,
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
+}
+
+fun Context.showMsg(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Context.findActivity(): Activity? = when (this) {
