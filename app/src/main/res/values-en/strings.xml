@@ -12,7 +12,6 @@
     <string name="missing_permissions">Location Permission</string>
     <string name="allow_permission">Allow</string>
     <string name="missing_permissions_info">For the alarm to work properly, please allow this application to access the device\'s location in the background and send notifications. This way, you will be notified whenever you arrive at a selected location.</string>
-    <string name="google_maps_key">***REMOVED***</string>
     <string name="select_place_on_map">Select a place on the map</string>
     <string name="or">or</string>
     <string name="background_location_notification_title">The app has access to your location</string>

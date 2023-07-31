@@ -13,7 +13,6 @@
     <string name="missing_permissions">Permissão de localização</string>
     <string name="allow_permission">Permitir</string>
     <string name="missing_permissions_info">Para que o alarme funcione corretamente, por favor permita que este aplicativo acesse a localização do dispositivo em segundo plano e envie notificações. Dessa forma você poderá ser notificado sempre que chegar em uma localização selecionada.</string>
-    <string name="google_maps_key">***REMOVED***</string>
     <string name="select_place_on_map">Selecione um lugar no mapa</string>
     <string name="or">ou</string>
     <string name="background_location_notification_title">O aplicativo tem acesso à sua localização</string>

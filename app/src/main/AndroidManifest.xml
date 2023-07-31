@@ -47,7 +47,7 @@
             android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="***REMOVED***" />
+            android:value="@string/google_ads_key" />
 
         <receiver android:name=".features.soundalarm.AlarmReceiver" android:enabled="true"
             android:exported="true" />
